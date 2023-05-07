@@ -1,0 +1,13 @@
+[
+    {"id":1,"title":"tv","description":"29","price":990,"thumbnail":"img.jpg","code":"6abc14FD23","stock":2},
+    {"id":2,"title":"celular","description":"Samsung","price":9999,"thumbnail":"img.jpg","code":"6n32f5o","stock":767},
+    {"id":3,"title":"monitor","description":"21","price":490,"thumbnail":"im4g.jpg","code":"abc1er423","stock":32},
+    {"id":4,"title":"pc","description":"Asus","price":590,"thumbnail":"img.jpg","code":"abc14FD623","stock":2},
+    {"id":5,"title":"laptop","description":"lenovo","price":969,"thumbnail":"img.jpg","code":"n326r5o","stock":565},
+    {"id":6,"title":"keyboard","description":"14\"","price":770,"thumbnail":"im4g.jpg","code":"abhc16er423","stock":32},
+    {"id":7,"title":"celular","description":"Motorola","price":9999,"thumbnail":"img.jpg","code":"n632f5o","stock":999},
+    {"id":8,"title":"monitor","description":"14","price":490,"thumbnail":"im4g.jpg","code":"abc1e6r423","stock":32},
+    {"id":9,"title":"procesador","description":"Intel","price":5960,"thumbnail":"img.jpg","code":"aybc5414FD23","stock":2},
+    {"id":10,"title":"laptop","description":"Toshiba","price":9669,"thumbnail":"img.jpg","code":"yny32r5o","stock":4545}
+]
+    
