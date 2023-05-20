@@ -70,8 +70,7 @@ export default class CartManager {
                 validation: true,
                 data:[]
             }
-        //verifico que exista el producto mediante su id en el stock de productos
-        
+        //verifico que exista el producto mediante su id en el stock de productos    
         const fileProductsParsed = await JSONreader('/src/db/products.json')     
         let foundedProduct = fileProductsParsed.find(product=> product.id === idProduct) 
         //si existe busco el id del carrito para agregarlo     
@@ -80,8 +79,9 @@ export default class CartManager {
             this.carts = await JSONreader(this.path)
             //busco el carrito 
             let foundedCart = this.carts.find(cart=> cart.id === idCart) 
-                //si existe el carrito, agrego el producto, pero primero verifico que el producto no exista en el carrito  
+                //si existe el carrito
                 if(foundedCart){
+                    //busco si el producto ya existe en el carrito
                     let foundProductInCart = foundedCart.products.find(product=> product.id === foundedProduct.id)
                     //si existe el producto en el carrito, sumo su cantidad
                     if(foundProductInCart){
@@ -94,7 +94,7 @@ export default class CartManager {
                         foundedCart.products = newProductsCart
                         //elimino el carrito del array de carritos
                         let newCartList = this.carts.filter(cart=> cart.id != foundedCart.id)  
-                        //y agrego carrito actualizado
+                        //y agrego carrito actualizado a la lista de carritos
                         newCartList = [...newCartList, foundedCart]
                         //actualizo la lista de carritos
                         this.carts = newCartList
@@ -109,11 +109,11 @@ export default class CartManager {
                     }else{
                         //defino el objeto del nuevo producto agregado
                         let newProduct = {id:foundedProduct.id, quantity:1}
-                        //lo agrego a los productos del carrito previamente encontrado
+                        //lo agrego a los productos del carrito previamente encontrado (foundedCart)
                         foundedCart.products.push(newProduct)                     
                         //elimino el carrito del array de carritos
                         let newCartList = this.carts.filter(cart=> cart.id != foundedCart.id)  
-                        //y agrego carrito actualizado
+                        //y agrego carrito actualizado a la lista de carritos
                         newCartList = [...newCartList, foundedCart]
                         //actualizo la lista de carritos
                         this.carts = newCartList
@@ -135,6 +135,7 @@ export default class CartManager {
            msg.error = 'Product not found in stock, please try another ID'
            msg.validation = false
         }
+        //devuelvo el objeto 'msg' que contiene el detalle de la operacion
         return msg
     }     
 }
