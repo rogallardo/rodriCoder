@@ -1,5 +1,7 @@
 import fs from'fs'
 import path from'path'
+import { JSONreader, JSONwriter } from './helpers/utils.js'
+
 
 export default class CartManager {
     constructor(){
@@ -22,9 +24,7 @@ export default class CartManager {
             data:[]
         }
         try {
-            const fileCart =  await fs.promises.readFile(path.resolve()  + this.path,'utf-8')
-            const fileCartParsed = JSON.parse(fileCart)
-            this.carts = fileCartParsed
+            this.carts = await JSONreader(this.path) 
             let foundedCart = this.carts.find(cart=> cart.id === idCart)
             if(foundedCart){
                 msg.data.push(foundedCart)
@@ -44,9 +44,7 @@ export default class CartManager {
             data:[]
         }
     try {  
-        const file =  await fs.promises.readFile(path.resolve()  + this.path,'utf-8')
-        const fileParsed = JSON.parse(file)
-        this.carts = fileParsed
+        this.carts = await JSONreader(this.path) 
         const id = await this.idGenerator()
         const products = []
         const newCart = {
@@ -55,8 +53,7 @@ export default class CartManager {
         }
         this.carts = [...this.carts, newCart]
         if(this.carts){
-            const cartsToJSON = JSON.stringify(this.carts)
-            await fs.promises.writeFile('./src/db/carts.json', cartsToJSON)
+            await JSONwriter(this.path, this.carts)
             msg.data.push(newCart)
         }
         
@@ -74,14 +71,14 @@ export default class CartManager {
                 data:[]
             }
         //verifico que exista el producto mediante su id en el stock de productos
-        const fileProduct =  await fs.promises.readFile(path.resolve()  + '/src/db/products.json','utf-8')
-        const fileProductParsed = JSON.parse(fileProduct)     
-        let foundedProduct = fileProductParsed.find(product=> product.id === idProduct) 
+        
+        const fileProductsParsed = await JSONreader('/src/db/products.json')     
+        let foundedProduct = fileProductsParsed.find(product=> product.id === idProduct) 
         //si existe busco el id del carrito para agregarlo     
         if(foundedProduct){
-            const fileCart =  await fs.promises.readFile(path.resolve()  + this.path,'utf-8')
-            const fileCartParsed = JSON.parse(fileCart)
-            this.carts = fileCartParsed
+            //leo el json de carritos
+            this.carts = await JSONreader(this.path)
+            //busco el carrito 
             let foundedCart = this.carts.find(cart=> cart.id === idCart) 
                 //si existe el carrito, agrego el producto, pero primero verifico que el producto no exista en el carrito  
                 if(foundedCart){
@@ -102,8 +99,7 @@ export default class CartManager {
                         //actualizo la lista de carritos
                         this.carts = newCartList
                         //actualizo el JSON de carritos
-                        const cartsToJSON = JSON.stringify(this.carts)
-                        await fs.promises.writeFile('./src/db/carts.json', cartsToJSON)
+                        await JSONwriter(this.path, this.carts)
                         //para evitar duplicados o inconvenientes, se crea el array vacio
                         msg.data = []
                         //retorno el carrito para mostrarlo al cliente
@@ -121,8 +117,7 @@ export default class CartManager {
                         newCartList = [...newCartList, foundedCart]
                         //actualizo la lista de carritos
                         this.carts = newCartList
-                        const cartsToJSON = JSON.stringify(this.carts)
-                        await fs.promises.writeFile('./src/db/carts.json', cartsToJSON)
+                        await JSONwriter(this.path, this.carts)
                         //para evitar duplicados o inconvenientes, se crea el array vacio
                         msg.data = []
                         //se pushea la informacion
