@@ -15,8 +15,7 @@ export default class ProductManager {
             this.products = await JSONreader(this.path) 
             return this.products
         }catch (error) {  
-            const productsJSON = JSON.stringify(this.products)
-            fs.writeFileSync(path.resolve()  + this.path, productsJSON)
+            await JSONwriter(this.path, this.products)
         }       
     }
     async getProductById(id){
