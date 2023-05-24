@@ -8,6 +8,7 @@ let stock = document.getElementById("input-stock")
 let category = document.getElementById("input-category")
 let thumbnail = document.getElementById("input-thumbnail")
 
+
 let btnAdd = document.getElementById('btn-add')
 let tbodyproducts = document.getElementById('tbodyproducts')
 
@@ -37,6 +38,16 @@ socket.on('msgtoback', (msg)=>{
          icon: 'success',
          title: `${msg.msgSuccess}`,
        })
+   }
+   
+   if(msg.msgSuccess === 'Producto agregado'){
+      title.value = ""
+      description.value = ""
+      code.value = ""
+      price.value = ""
+      stock.value = ""
+      category.value = ""
+      thumbnail.value = ""
    }
    
    //si hay lista de productos

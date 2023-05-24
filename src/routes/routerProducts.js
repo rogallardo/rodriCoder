@@ -17,11 +17,21 @@ routerProducts.get('/', async (req, res)=>{
             products.length = limit
           }
           // devuelvo el array acorde al limite especificado
+          /*return res.json({
+              status: 'success',
+              msg: `The limit of sended products is ${limit}`,
+              data: products
+          })*/
           return res.render('home', {products})
       }else{
         //si no hay query de limite, devuelvo el array completo
-        const products = await product.getProducts()
+        const products = await product.getProducts() 
         return res.render('home', {products})
+          /*return res.json({
+              status: 'success',
+              msg: 'All products sended',
+              data: products
+          })*/
       }
 })
 routerProducts.get("/:id", async (req, res) => {
