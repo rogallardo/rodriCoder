@@ -1,7 +1,8 @@
 import express from 'express'
 import CartManager from '../controllers/CartManager.js'
-
+//defino el router
 export const routerCarts = express.Router()
+//instancio la clase
 const cart = new CartManager()
 routerCarts.get('/:cid', async (req, res)=>{
     const idCart = Number(req.params.cid)

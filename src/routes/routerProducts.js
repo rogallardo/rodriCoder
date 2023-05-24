@@ -1,7 +1,7 @@
 import  express  from "express";
 import ProductManager from "../controllers/ProductManager.js";
 //defino el router
-export const  routerProducts = express.Router()
+export const routerProducts = express.Router()
 
 //instancio la clase
 const product = new ProductManager()
@@ -17,18 +17,11 @@ routerProducts.get('/', async (req, res)=>{
             products.length = limit
           }
           // devuelvo el array acorde al limite especificado
-          return res.json({
-              status: 'success',
-              msg: `The limit of sended products is ${limit}`,
-              data: products
-          })
+          return res.render('home', {products})
       }else{
         //si no hay query de limite, devuelvo el array completo
-          return res.json({
-              status: 'success',
-              msg: 'All products sended',
-              data: await product.getProducts()
-          })
+        const products = await product.getProducts()
+        return res.render('home', {products})
       }
 })
 routerProducts.get("/:id", async (req, res) => {

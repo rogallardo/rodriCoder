@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from'path'
+
 //funciones de lectura del JSON
 export async function JSONreader(directory){
     try {
@@ -20,7 +21,6 @@ export async function JSONwriter(directory, fileToWrite){
         error('Error writing JSON')
     }    
 }
-
 
 
 

@@ -1,8 +1,4 @@
-import fs from'fs'
-import path from'path'
-import { JSONreader, JSONwriter } from './helpers/utils.js'
-
-
+import { JSONreader, JSONwriter } from './helpers/helpers.js'
 
 export default class ProductManager {
     constructor(){      
@@ -59,7 +55,7 @@ export default class ProductManager {
         } 
         const id = await this.idGenerator()
         status = true
-        title = title ??  fieldValidation('title')
+        title = title  ??  fieldValidation('title')
         description = description ??  fieldValidation('description')
         price = price ??  fieldValidation('price')
         category = category ??  fieldValidation('thumbnail')
