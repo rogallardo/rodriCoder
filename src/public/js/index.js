@@ -24,8 +24,7 @@ const deleteProduct = (id)=>{
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-         socket.emit('msgdelete', id)
-        
+         socket.emit('msgdelete', id)       
       }
     })
    
@@ -40,7 +39,7 @@ socket.on('msgtoback', (msg)=>{
        })
    }
    
-   if(msg.msgSuccess === 'Producto agregado'){
+   if(msg.msgSuccess === 'Product added'){
       title.value = ""
       description.value = ""
       code.value = ""

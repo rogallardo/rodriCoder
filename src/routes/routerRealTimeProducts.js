@@ -34,7 +34,7 @@ routerRealTimeProducts.get('/', async (req, res)=>{
                 //si no hay error agrego el producto                      
                 }else{
                     const updatedProducts = await product.getProducts()
-                    socket.emit("msgtoback", {msgSuccess:'Producto agregado', prods: updatedProducts} )                    
+                    socket.emit("msgtoback", {msgSuccess:'Product added', prods: updatedProducts} )                    
                 }    
                } catch (err) {
                console.log('error')
@@ -44,7 +44,7 @@ routerRealTimeProducts.get('/', async (req, res)=>{
         socket.on("msgdelete", async (id)=>{
             const deleteProduct = await product.deleteById(id)
             const updatedProducts = await product.getProducts()
-            socket.emit("msgtoback", {msgSuccess:'Producto eliminado', prods: updatedProducts} )
+            socket.emit("msgtoback", {msgSuccess:'Product deleted', prods: updatedProducts} )
         })
     })    
     return res.render('realTimeProducts')
