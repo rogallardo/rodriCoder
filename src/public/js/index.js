@@ -7,9 +7,8 @@ let price = document.getElementById("input-price")
 let stock = document.getElementById("input-stock")
 let category = document.getElementById("input-category")
 let thumbnail = document.getElementById("input-thumbnail")
-
-
 let btnAdd = document.getElementById('btn-add')
+let btnDelete = document.querySelectorAll('.btn')
 let tbodyproducts = document.getElementById('tbodyproducts')
 
 let content = ""
@@ -53,12 +52,14 @@ socket.on('primarychannel', (msg)=>{
          <td>${element.stock}</td> 
          <td>${element.category}</td>
          <td>${element.thumbnail}</td>
-         <td><button type="button" class="btn btn-danger" onclick="deleteProduct(${element.id})">Delete</button></td>  
+         <td><button id=${element.id} type="button" class="btn btn-danger" >Delete</button></td>
          </tr>         
          ` 
          count++
          tbodyproducts.innerHTML = content
       });
+      //una vez creados los items, se le agrega add event listeners a sus botones "eliminar"
+      addingEventListenertoDeleteBtn()
       
    }else{
       //muestra el msj de error en caso de haberlo (proviene del backend)
@@ -69,7 +70,8 @@ socket.on('primarychannel', (msg)=>{
    }
 })
 
-//creo un objeto
+
+//creo un objeto vacio
 let newProduct = {}
 //al agregar mediante el boton, se le daran los valores al producto mediante los inputs
 btnAdd.addEventListener("click", ()=>{
@@ -83,7 +85,7 @@ btnAdd.addEventListener("click", ()=>{
     category: category.value,
     thumbnail: thumbnail.value
  }
-//validacion
+//validacion en inputs sin completar
 const validation = ()=>{
    let val = true
    let values = Object.values(newProduct)
@@ -105,7 +107,17 @@ if(validation()){
 }
 })
 //eliminar
-const deleteProduct = (id)=>{
+//defino la funcion que agrega add event listener y su respectiva accion
+function addingEventListenertoDeleteBtn(){
+   btnDelete = document.querySelectorAll('.btn')
+   btnDelete.forEach(boton=>{
+      boton.addEventListener("click", deleteProduct)
+   })
+ 
+}
+//accion del boton delete (tomo el id y lo envio por emit al back)
+const deleteProduct = (e)=>{
+   const id = Number(e.currentTarget.id)
    Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -118,8 +130,7 @@ const deleteProduct = (id)=>{
       if (result.isConfirmed) {
          socket.emit('msgdelete', id)       
       }
-    })
-   
+    }) 
 }
 
 
