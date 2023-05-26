@@ -1,1 +1,101 @@
-[{"id":1,"title":"tv","description":"Samsung","code":"abdfgdfgFdgfcfggfggfgfgdcgu12345","price":276,"status":true,"stock":4,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":2,"title":"teclado","description":"Logitech","code":"abdfgdfgggcu12345","price":254,"status":true,"stock":4,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":3,"title":"smart watch","description":"Xiaomi","code":"abdfgdyfggkjyggfc12345","price":130,"status":true,"stock":5,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":4,"title":"tv","description":"Samsung","code":"abdfgdffgggyrggfc12345","price":346,"status":true,"stock":9,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":5,"title":"mouse","description":"Logitech","code":"abdfgdfgfggyfgrggfc12345","price":40,"status":true,"stock":2,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":6,"title":"tablet","description":"noblex","code":"abdfgdfdfgdgfggfggcgu12345","price":353,"status":true,"stock":4,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":7,"title":"modem","description":"tp link","code":"abdfgdfgddfgfgggfggcgu12345","price":675,"status":true,"stock":4,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":8,"title":"celular","description":"Samsung S 23","code":"abdfgdfgddfgfgggdffggcgu12345","price":323,"status":true,"stock":4,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":9,"title":"ChromeCast","description":"Chrome conector","code":"abdfgdfgdddfdgfgggfggcgu12345","price":232,"status":true,"stock":5,"category":"electro","thumbnail":["ejemplo/ejemplo.jpg"]},{"id":10,"title":"Laptop","description":"Acer swift","code":"sasdasd","price":"1200","status":true,"stock":"32","category":"electro","thumbnail":"ejemplo/ejemplo.jpg\t"},{"id":11,"title":"Notebook","description":"hp","code":"dsdsf","price":"212","status":true,"stock":"2","category":"electro","thumbnail":"ejemplo/ejemplo.jpg"},{"id":12,"title":"Camara digital","description":"Cannon","code":"retyhtrgger","price":"2445","status":true,"stock":"23","category":"electro","thumbnail":"ejemplo/ejemplo.jpg"}]
+[{
+    "id": 1,
+    "title": "tv",
+    "description": "Samsung",
+    "code": "abdfgdfgFdgfcfggfggfgfgdcgu12345",
+    "price": 276,
+    "status": true,
+    "stock": 4,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 2,
+    "title": "Teclado",
+    "description": "Logitech",
+    "code": "abdfgdfgggcu12345",
+    "price": 254,
+    "status": true,
+    "stock": 4,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 3,
+    "title": "Smart Watch",
+    "description": "Xiaomi",
+    "code": "abdfgdyfggkjyggfc12345",
+    "price": 130,
+    "status": true,
+    "stock": 5,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 4,
+    "title": "Mouse",
+    "description": "Logitech",
+    "code": "abdfgdfgfggyfgrggfc12345",
+    "price": 40,
+    "status": true,
+    "stock": 2,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 5,
+    "title": "Tablet",
+    "description": "Noblex",
+    "code": "abdfgdfdfgdgfggfggcgu12345",
+    "price": 353,
+    "status": true,
+    "stock": 4,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 6,
+    "title": "Modem",
+    "description": "TP link",
+    "code": "abdfgdfgddfgfgggfggcgu12345",
+    "price": 675,
+    "status": true,
+    "stock": 4,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 7,
+    "title": "Celular",
+    "description": "Samsung S 23",
+    "code": "abdfgdfgddfgfgggdffggcgu12345",
+    "price": 323,
+    "status": true,
+    "stock": 4,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 8,
+    "title": "ChromeCast",
+    "description": "Chrome conector",
+    "code": "abdfgdfgdddfdgfgggfggcgu12345",
+    "price": 232,
+    "status": true,
+    "stock": 5,
+    "category": "electro",
+    "thumbnail": ["ejemplo/ejemplo.jpg"]
+}, {
+    "id": 9,
+    "title": "Notebook",
+    "description": "Hp",
+    "code": "sdftr5gfd",
+    "price": "2322",
+    "status": true,
+    "stock": "22",
+    "category": "electro",
+    "thumbnail": "ejemplo/ejemplo.jpg"
+}, {
+    "id": 10,
+    "title": "Celular",
+    "description": "Xiaomi",
+    "code": "ewrwerw",
+    "price": "321",
+    "status": true,
+    "stock": "12",
+    "category": "electro",
+    "thumbnail": "ejemplo/ejemplo.jpg"
+}]

@@ -13,24 +13,9 @@ let btnAdd = document.getElementById('btn-add')
 let tbodyproducts = document.getElementById('tbodyproducts')
 
 let content = ""
-const deleteProduct = (id)=>{
-   Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-         socket.emit('msgdelete', id)       
-      }
-    })
-   
-}
+
 //escucho al back
-socket.on('msgtoback', (msg)=>{
+socket.on('primarychannel', (msg)=>{
    //escucho posibles mensajes
    if(msg.msgSuccess != undefined){
       Swal.fire({
@@ -116,9 +101,26 @@ const validation = ()=>{
 //si la validacion es true
 if(validation()){
    //envio el nuevo producto al back
-   socket.emit('msgtoback', newProduct)
+   socket.emit('primarychannel', newProduct)
 }
 })
+//eliminar
+const deleteProduct = (id)=>{
+   Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         socket.emit('msgdelete', id)       
+      }
+    })
+   
+}
 
 
 

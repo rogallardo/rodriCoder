@@ -13,9 +13,9 @@ routerRealTimeProducts.get('/', async (req, res)=>{
         console.log(`conectado con id ${socket.id}`)
         //envio la lista inicial de productos
         const allProducts = await product.getProducts()
-        socket.emit('msgtoback', {prods: allProducts})
+        socket.emit('primarychannel', {prods: allProducts})
         //si se agrega un producto, lo recibo desde el front y guardo las variables
-        socket.on("msgtoback", async (msg)=>{                 
+        socket.on("primarychannel", async (msg)=>{                 
             let title = msg.title 
             let description = msg.description
             let code = msg.code
@@ -30,11 +30,11 @@ routerRealTimeProducts.get('/', async (req, res)=>{
                     title, description, code, price, status, stock, category, thumbnail)
                 //si hay error al agregar, muestro el error (dicho mensaje viene de la validacion)  
                 if(adding.validation === false){
-                    socket.emit("msgtoback", adding.error )
+                    socket.emit("primarychannel", adding.error )
                 //si no hay error agrego el producto                      
                 }else{
                     const updatedProducts = await product.getProducts()
-                    socket.emit("msgtoback", {msgSuccess:'Product added', prods: updatedProducts} )                    
+                    socket.emit("primarychannel", {msgSuccess:'Product added', prods: updatedProducts} )                    
                 }    
                } catch (err) {
                console.log('error')
@@ -44,7 +44,7 @@ routerRealTimeProducts.get('/', async (req, res)=>{
         socket.on("msgdelete", async (id)=>{
             const deleteProduct = await product.deleteById(id)
             const updatedProducts = await product.getProducts()
-            socket.emit("msgtoback", {msgSuccess:'Product deleted', prods: updatedProducts} )
+            socket.emit("primarychannel", {msgSuccess:'Product deleted', prods: updatedProducts} )
         })
     })    
     return res.render('realTimeProducts')
