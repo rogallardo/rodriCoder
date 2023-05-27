@@ -25,6 +25,7 @@ export default class ProductManager {
     async idGenerator(){
         let id = this.products.length + 1
         const idCheck = this.products.some(x=> {x.id === id})
+        console.log('hola')
         if(idCheck){
             id = id + 1
         }

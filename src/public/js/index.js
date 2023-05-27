@@ -8,7 +8,7 @@ let stock = document.getElementById("input-stock")
 let category = document.getElementById("input-category")
 let thumbnail = document.getElementById("input-thumbnail")
 let btnAdd = document.getElementById('btn-add')
-let btnDelete = document.querySelectorAll('.btn')
+let btnDelete = document.querySelectorAll('.btn-danger')
 let tbodyproducts = document.getElementById('tbodyproducts')
 
 let content = ""
@@ -19,7 +19,7 @@ socket.on('primarychannel', (msg)=>{
    if(msg.msgSuccess != undefined){
       Swal.fire({
          icon: 'success',
-         title: `${msg.msgSuccess}`,
+         title: msg.msgSuccess,
        })
    }
    
@@ -91,6 +91,7 @@ const validation = ()=>{
    let values = Object.values(newProduct)
    let stringValueFounded = values.find(x=> x === '')
    if(stringValueFounded === ''){
+     
       Swal.fire({
          icon: 'warning',
          title: 'Cannot add product',
@@ -109,7 +110,7 @@ if(validation()){
 //eliminar
 //defino la funcion que agrega add event listener y su respectiva accion
 function addingEventListenertoDeleteBtn(){
-   btnDelete = document.querySelectorAll('.btn')
+   btnDelete = document.querySelectorAll('.btn-danger')
    btnDelete.forEach(boton=>{
       boton.addEventListener("click", deleteProduct)
    })
