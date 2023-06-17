@@ -134,6 +134,6 @@ const deleteProduct = (e)=>{
     }) 
 }
 
-
+//C:\Program Files\MongoDB\Server\5.0\data\
 
 

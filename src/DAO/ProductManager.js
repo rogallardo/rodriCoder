@@ -1,6 +1,7 @@
-import { JSONreader, JSONwriter } from './helpers/helpers.js'
+//import { JSONreader, JSONwriter } from './helpers/helpers.js'
 
-export default class ProductManager {
+//exportar para usar
+class ProductManager {
     constructor(){      
         this.products = []      
         this.path =  '/src/db/products.json'
