@@ -4,9 +4,9 @@ export const routerProducts = express.Router()
 
 routerProducts.get('/', async (req, res) => {
   try {
-    let { page, limit, category } = req.query
-    const queries = {page, limit}
-    let {error, msg, data} = await productService.getProducts(queries) 
+    let { page, limit, category, sort, order } = req.query
+    const queries = {page, limit, category, sort, order}
+    let { error, msg, data } = await productService.getProducts(queries) 
       return res.render('home', {data})
   } catch (error) {
     console.log(error)

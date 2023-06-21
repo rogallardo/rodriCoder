@@ -8,8 +8,17 @@ class ProductService {
             paginate: {}
         }
         try {
-            let { page, limit, category } = queries
-            let products = await ProductModel.paginate({}, {limit: 5, page: page || 1})
+            let { page, limit, category, sort, order } = queries
+            const sortField = sort
+            const sortOrder = order
+
+            const options = {
+                page: page || 1,
+                limit: limit || 5,
+               sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 } // Aplicar el campo de ordenamiento y dirección
+              };
+            category = category ? {category} : {}
+            let products = await ProductModel.paginate(category, options)
 
             const docsNormalized = products.docs.map(doc=> {
                 return {
@@ -29,6 +38,10 @@ class ProductService {
                     docsNormalized.length = limit
                 }
             }
+            if ( sort ) {
+                sort === 'asc' ? 1 : -1
+            }
+            
             result.data = docsNormalized
             result.msg = "Products sended successfully"
             result.paginate = {
