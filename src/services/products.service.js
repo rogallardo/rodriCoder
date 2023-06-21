@@ -1,17 +1,45 @@
 import { ProductModel } from "../DAO/models/product.model.js";
 class ProductService {
-    async getProducts() {
+    async getProducts(queries) {
         const result = {
             error: false,
             msg: "",
-            data: {}
+            data: {},
+            paginate: {}
         }
         try {
-            let res = await ProductModel.paginate({}, {limit: 5, page: 1})
-            console.log(res)
-            const products = await ProductModel.find({})
-            result.data = products
+            let { page, limit, category } = queries
+            let products = await ProductModel.paginate({}, {limit: 5, page: page || 1})
+
+            const docsNormalized = products.docs.map(doc=> {
+                return {
+                        id: doc._id.toString(),
+                        title: doc.title,
+                        description: doc.description,
+                        code: doc.code,
+                        price: doc.price,
+                        status: doc.status,
+                        stock: doc.stock,
+                        category: doc.category,
+                        thumbnail: doc.thumbnail
+                    }
+            })
+            if ( limit ) {
+                if (limit > 0 && limit <= docsNormalized.length) {
+                    docsNormalized.length = limit
+                }
+            }
+            result.data = docsNormalized
             result.msg = "Products sended successfully"
+            result.paginate = {
+                totalDocs: products.totalDocs, 
+                totalPages: products.totalPages, 
+                pagingCounter: products.pagingCounter, 
+                hasPrevPage: products.hasPrevPage, 
+                hasNextPage: products.hasNextPage, 
+                prevPage: products.prevPage, 
+                nextPage: products.nextPage
+            }
             return result
         } catch (error) {
             result.error = true

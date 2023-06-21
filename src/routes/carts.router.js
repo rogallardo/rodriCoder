@@ -4,6 +4,7 @@ export const routerCarts = express.Router()
 
 routerCarts.get('/:cid', async (req, res)=>{
 let { cid } = req.params
+
 const cart = await cartService.getCart(cid)
 return res.json({
     data: cart

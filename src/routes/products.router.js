@@ -4,24 +4,10 @@ export const routerProducts = express.Router()
 
 routerProducts.get('/', async (req, res) => {
   try {
-    let {error, msg, data} = await productService.getProducts()
-    const limit = Number(req.query.limit)
-    if (req.query && limit) {
-      if (limit > 0 && limit <= data.length) {
-        data.length = limit
-      }
-      return res.status(200).json({
-        error,
-        msg,
-        data
-      })
-    } else {
-      return res.status(200).json({
-        error,
-        msg,
-        data
-      })
-    }
+    let { page, limit, category } = req.query
+    const queries = {page, limit}
+    let {error, msg, data} = await productService.getProducts(queries) 
+      return res.render('home', {data})
   } catch (error) {
     console.log(error)
     return res.status(500).json({

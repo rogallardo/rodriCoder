@@ -1,7 +1,6 @@
 import path from'path'
 import { fileURLToPath } from "url";
 import multer from "multer";
-import mongoose from 'mongoose';
 import { connect } from 'mongoose'
 //configuro el '__dirname'
 const __filename = fileURLToPath(import.meta.url);
