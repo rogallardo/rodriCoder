@@ -31,7 +31,9 @@ class ProductService {
                         thumbnail: doc.thumbnail
                     }
             })
-            
+            const prevLink = products.hasPrevPage ? `http://localhost:8080/api/products/?page=${products.prevPage}` : null
+            const nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
+
             result.data = docsNormalized
             result.msg = "Products sended successfully"
             result.paginate = {
@@ -41,7 +43,9 @@ class ProductService {
                 hasPrevPage: products.hasPrevPage, 
                 hasNextPage: products.hasNextPage, 
                 prevPage: products.prevPage, 
-                nextPage: products.nextPage
+                nextPage: products.nextPage,
+                prevLink,
+                nextLink
             }
             return result
         } catch (error) {

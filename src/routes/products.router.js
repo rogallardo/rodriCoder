@@ -13,6 +13,8 @@ routerProducts.get('/', async (req, res) => {
         totalPages: paginate.totalPages,
         prevPage: paginate.prevPage,
         nextPage: paginate.nextPage,
+        prevLink: paginate.prevLink,
+        nextLink: paginate.nextLink
       })
      // res.render('home', {data})
       return

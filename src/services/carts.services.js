@@ -7,8 +7,16 @@ import { CartModel } from "../DAO/models/cart.model.js";
         data: {}
     }
        const cart = await CartModel.findById(id).populate('products.product')
+       let { products } = cart
+       const docsNormalized = products.map(item => {  
+        const plainItem = item.toObject()
+        plainItem.product._id = plainItem.product._id.toString();
+        plainItem._id = plainItem._id.toString();
+        return plainItem
+      });
+
        result.msg = "Cart sended",
-       result.data = cart
+       result.data = docsNormalized
        return result
     }
     async addProduct(cid, pid) {

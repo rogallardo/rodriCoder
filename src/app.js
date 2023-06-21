@@ -5,6 +5,8 @@ import { Server } from 'socket.io';
 import { connectionMongo } from './utils/utils.js';
 import { routerProducts } from './routes/products.router.js';
 import { routerCarts} from './routes/carts.router.js';
+import { routerProductsView } from './routes/views.router.js';
+import { routerCartView } from './routes/views.router.js';
 //import { routerRealTimeProducts } from './routes/realTimeProducts.router.js';
 import handlebars from "express-handlebars";
 
@@ -12,7 +14,7 @@ const app = express();
 const port = 8080; 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 //handlebars configuration
 app.engine("handlebars", handlebars.engine());
@@ -23,6 +25,8 @@ app.set("view engine", "handlebars");
 
 app.use('/api/products/', routerProducts)
 app.use('/api/carts/', routerCarts)
+app.use('/products/', routerProductsView)
+app.use('/cart/', routerCartView)
 //app.use('/api/realtimeproducts/', routerRealTimeProducts)
 
 app.get("*", (req, res) => {
