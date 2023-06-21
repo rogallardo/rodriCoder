@@ -6,8 +6,17 @@ routerProducts.get('/', async (req, res) => {
   try {
     let { page, limit, category, sort, order } = req.query
     const queries = {page, limit, category, sort, order}
-    let { error, msg, data } = await productService.getProducts(queries) 
-      return res.render('home', {data})
+    let { error, msg, data, paginate } = await productService.getProducts(queries) 
+      res.json({
+        status: error ? msg : 'success',
+        payload: data || {},
+        totalPages: paginate.totalPages,
+        prevPage: paginate.prevPage,
+        nextPage: paginate.nextPage,
+      })
+     // res.render('home', {data})
+      return
+      
   } catch (error) {
     console.log(error)
     return res.status(500).json({
