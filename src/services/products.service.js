@@ -1,4 +1,6 @@
 import { ProductModel } from "../DAO/models/product.model.js";
+
+
 class ProductService {
     async getProducts(queries) {
         const result = {
@@ -8,13 +10,16 @@ class ProductService {
             paginate: {}
         }
         try {
-            let { page, limit, category, sort, order } = queries
+            let { page, limit, category, sort, order, originalURL } = queries
             category = category ? {category} : {}
+           
             const options = {
                 page: page || 1,
-                limit: limit || 5,
-                sort: { [sort]: order === 'asc' ? 1 : -1 }
+                limit: limit || 5,            
               };
+              if(sort){
+                options.sort = { [sort]: order === 'asc' ? 1 : -1 }
+            } 
             
             let products = await ProductModel.paginate(category, options)
 
@@ -31,12 +36,18 @@ class ProductService {
                         thumbnail: doc.thumbnail
                     }
             })
-            const prevLink = products.hasPrevPage ? `http://localhost:8080/api/products/?page=${products.prevPage}` : null
-            const nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
+            let prevLink = products.hasPrevPage ? `http://localhost:8080/products/?page=${products.prevPage}` : null
+            let nextLink = products.hasNextPage ? `http://localhost:8080${originalURL}&page=${products.nextPage}` : null
+        //si quiero mantener las queries y ademas quiero las paginas dinamicas, solo reemplazo la pagina en la url actual:
+            if(page){
+                prevLink = products.hasPrevPage ? originalURL.replace(`page=${page}`, `page=${products.prevPage}`) : null
+                nextLink = products.hasNextPage ? originalURL.replace(`page=${page}`, `page=${products.nextPage}`) : null
+            }
 
             result.data = docsNormalized
             result.msg = "Products sended successfully"
             result.paginate = {
+                page,
                 totalDocs: products.totalDocs, 
                 totalPages: products.totalPages, 
                 pagingCounter: products.pagingCounter, 

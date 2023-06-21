@@ -12,7 +12,11 @@ function addingEventListenertoAddtoCartBtn(){
         })
         .then(res=> res.json())
         .then(data=> console.log(data))
-        .catch(err=> {console.log(err)})
+        .catch(err=> {
+            if(err){
+                console.error(err)
+            }      
+        })
        })
     })
  }
