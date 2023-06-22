@@ -1,4 +1,6 @@
-import { ProductModel } from "../DAO/models/product.model.js";
+import {
+    ProductModel
+} from "../DAO/models/product.model.js";
 
 
 class ProductService {
@@ -11,49 +13,52 @@ class ProductService {
         }
         try {
             let { page, limit, category, sort, order, originalURL } = queries
-            category = category ? {category} : {}
-           
+            category = category ? { category } : {}
+
             const options = {
                 page: page || 1,
-                limit: limit || 5,            
-              };
-              if(sort){
-                options.sort = { [sort]: order === 'asc' ? 1 : -1 }
-            } 
-            
-            let products = await ProductModel.paginate(category, options)
+                limit: limit || 5,
+            };
+            if (sort) {
+                options.sort = {
+                    [sort]: order === 'asc' ? 1 : -1
+                }
+            }
 
-            const docsNormalized = products.docs.map(doc=> {
+            let products = await ProductModel.paginate(category, options)
+            const docsNormalized = products.docs.map(doc => {
                 return {
-                        id: doc._id.toString(),
-                        title: doc.title,
-                        description: doc.description,
-                        code: doc.code,
-                        price: doc.price,
-                        status: doc.status,
-                        stock: doc.stock,
-                        category: doc.category,
-                        thumbnail: doc.thumbnail
-                    }
+                    id: doc._id.toString(),
+                    title: doc.title,
+                    description: doc.description,
+                    code: doc.code,
+                    price: doc.price,
+                    status: doc.status,
+                    stock: doc.stock,
+                    category: doc.category,
+                    thumbnail: doc.thumbnail
+                }
             })
+
+            
             let prevLink = products.hasPrevPage ? `http://localhost:8080/products/?page=${products.prevPage}` : null
-            let nextLink = products.hasNextPage ? `http://localhost:8080${originalURL}&page=${products.nextPage}` : null
+            let nextLink = products.hasNextPage ? `http://localhost:8080${originalURL}?page=${products.nextPage}` : null
         //si quiero mantener las queries y ademas quiero las paginas dinamicas, solo reemplazo la pagina en la url actual:
             if(page){
-                prevLink = products.hasPrevPage ? originalURL.replace(`page=${page}`, `page=${products.prevPage}`) : null
-                nextLink = products.hasNextPage ? originalURL.replace(`page=${page}`, `page=${products.nextPage}`) : null
+                prevLink = products.hasPrevPage ? originalURL.replace(`?page=${page}`, `?page=${products.prevPage}`) : null
+                nextLink = products.hasNextPage ? originalURL.replace(`?page=${page}`, `?page=${products.nextPage}`) : null
             }
 
             result.data = docsNormalized
             result.msg = "Products sended successfully"
             result.paginate = {
                 page,
-                totalDocs: products.totalDocs, 
-                totalPages: products.totalPages, 
-                pagingCounter: products.pagingCounter, 
-                hasPrevPage: products.hasPrevPage, 
-                hasNextPage: products.hasNextPage, 
-                prevPage: products.prevPage, 
+                totalDocs: products.totalDocs,
+                totalPages: products.totalPages,
+                pagingCounter: products.pagingCounter,
+                hasPrevPage: products.hasPrevPage,
+                hasNextPage: products.hasNextPage,
+                prevPage: products.prevPage,
                 nextPage: products.nextPage,
                 prevLink,
                 nextLink
@@ -74,15 +79,15 @@ class ProductService {
         }
         try {
             const product = await ProductModel.findById(id)
-            if(product != null){
+            if (product != null) {
                 result.msg = "Product sended successfully"
                 result.data = product
-            }else{
+            } else {
                 result.error = true
                 result.msg = "Product was deleted, or doesn't exist"
                 result.data = {}
             }
-            
+
             return result
         } catch (error) {
             result.error = true
@@ -97,7 +102,16 @@ class ProductService {
             msg: "",
             data: {}
         }
-        let {title, description, code, price, status, stock, category,thumbnail} = newProduct
+        let {
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnail
+        } = newProduct
         if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail) {
             result.error = true
             result.msg = "Error, please complete the fields"
@@ -110,7 +124,7 @@ class ProductService {
                 return result
             } catch (error) {
                 result.error = true,
-                result.msg = "Cannot add a product, something wrong with db"
+                    result.msg = "Cannot add a product, something wrong with db"
                 result.data = {}
                 return result
             }
@@ -122,7 +136,16 @@ class ProductService {
             msg: "",
             data: {}
         }
-        let {title, description, code, price, status, stock, category, thumbnail} = productUpdated
+        let {
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnail
+        } = productUpdated
         if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail) {
             result.error = true
             result.msg = "Error, please complete the fields"
@@ -135,7 +158,7 @@ class ProductService {
                 return result
             } catch (error) {
                 result.error = true,
-                result.msg = "Cannot update product, something wrong with db"
+                    result.msg = "Cannot update product, something wrong with db"
                 result.data = {}
                 return result
             }
@@ -149,24 +172,24 @@ class ProductService {
         }
         try {
             const deletedProduct = await ProductModel.findByIdAndDelete(id)
-            if(deletedProduct != null){
+            if (deletedProduct != null) {
                 result.msg = "Product deleted"
                 result.data = deletedProduct
-            }else{
+            } else {
                 result.error = true
                 result.msg = "Product was deleted, or doesn't exist"
                 result.data = {}
             }
-            
+
             return result
-           
+
         } catch (error) {
             console.log(error)
             result.error = true,
-            result.msg = "Cannot delete product, please check ID"
+                result.msg = "Cannot delete product, please check ID"
             return result
         }
-       
+
     }
 }
 
