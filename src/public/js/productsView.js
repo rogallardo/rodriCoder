@@ -11,7 +11,14 @@ function addingEventListenertoAddtoCartBtn(){
 
         })
         .then(res=> res.json())
-        .then(data=> console.log(data))
+        .then(data=> {let { error } = data
+            if(!error){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product added to cart: 648752d1f9a4e463ea96a97a',
+                  })
+            }
+        })
         .catch(err=> {
             if(err){
                 console.error(err)

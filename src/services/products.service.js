@@ -39,13 +39,9 @@ class ProductService {
                     thumbnail: doc.thumbnail
                 }
             })
-
-            
             let prevLink = products.hasPrevPage ? `http://localhost:8080/api/products/?page=${products.prevPage}` : null
             let nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
-        //si quiero mantener las queries y ademas quiero las paginas dinamicas, solo reemplazo la pagina en la url actual:
-          
-
+            
             result.data = docsNormalized
             result.msg = "Products sended successfully"
             result.paginate = {
