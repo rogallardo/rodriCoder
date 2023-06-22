@@ -41,13 +41,10 @@ class ProductService {
             })
 
             
-            let prevLink = products.hasPrevPage ? `http://localhost:8080/products/?page=${products.prevPage}` : null
-            let nextLink = products.hasNextPage ? `http://localhost:8080${originalURL}?page=${products.nextPage}` : null
+            let prevLink = products.hasPrevPage ? `http://localhost:8080/api/products/?page=${products.prevPage}` : null
+            let nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
         //si quiero mantener las queries y ademas quiero las paginas dinamicas, solo reemplazo la pagina en la url actual:
-            if(page){
-                prevLink = products.hasPrevPage ? originalURL.replace(`?page=${page}`, `?page=${products.prevPage}`) : null
-                nextLink = products.hasNextPage ? originalURL.replace(`?page=${page}`, `?page=${products.nextPage}`) : null
-            }
+          
 
             result.data = docsNormalized
             result.msg = "Products sended successfully"
