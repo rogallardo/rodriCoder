@@ -16,7 +16,6 @@ routerProducts.get('/', async (req, res) => {
         prevLink: paginate.prevLink,
         nextLink: paginate.nextLink
       })
-     // res.render('home', {data})
       return
       
   } catch (error) {

@@ -1,0 +1,22 @@
+<div class="productDetail-container">
+    <h1 class="title-productDetail">Product detail</h1>
+    <div class="cardDetail-container">
+        <div class="cardDetail">
+            
+              <img src={{data.thumbnail}}>
+                <div class="cardDetail-content">
+                <h3>{{data.title}}</h3>
+                <p>{{data.description}}</p>
+                <h4>us$ {{data.price}}</h4>
+                <a  id={{data.id}} class="btn-addToCart">Add to cart</a>
+                <a href="http://localhost:8080/products/" class="btn-goBack">Go back</a>
+            </div>
+          
+          
+        </div>
+    </div>   
+       
+</div>
+
+<script src="/js/productDetail.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

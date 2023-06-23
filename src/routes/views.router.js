@@ -5,7 +5,7 @@ import { cartService } from "../services/carts.services.js";
  export const routerProductsView = express.Router()
  export const routerCartView = express.Router()
 
-
+//rutas productos
 routerProductsView.get('/', async (req, res)=>{
     const originalURL = req.originalUrl
     let { page, limit, category, sort, order } = req.query
@@ -20,7 +20,13 @@ routerProductsView.get('/', async (req, res)=>{
     res.render('products', {data, paginate})
 
 })
-
+routerProductsView.get('/:pid', async (req, res)=>{
+    let { pid } = req.params
+    let {error, msg, data} = await productService.getProductById(pid)
+    console.log(data)
+    res.render('productDetail', {data})
+})
+//rutas carrito
 routerCartView.get('/:cid', async (req, res)=>{
     let {cid} = req.params
     let {error, msg, data} = await cartService.getCart(cid)   

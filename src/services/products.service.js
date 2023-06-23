@@ -17,7 +17,7 @@ class ProductService {
 
             const options = {
                 page: page || 1,
-                limit: limit || 5,
+                limit: limit || 4,
             };
             if (sort) {
                 options.sort = {
@@ -43,6 +43,7 @@ class ProductService {
             let nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
             
             result.data = docsNormalized
+            console.log(result.data)
             result.msg = "Products sended successfully"
             result.paginate = {
                 page,
@@ -71,8 +72,19 @@ class ProductService {
             data: {}
         }
         try {
-            const product = await ProductModel.findById(id)
+            let product = await ProductModel.findById(id)
             if (product != null) {
+                const id = product._id.toString()
+                product = {id, 
+                    title: product.title,
+                    description: product.description,
+                    code: product.code,
+                    price: product.price,
+                    status: product.status,
+                    stock: product.stock,
+                    category: product.category,
+                    thumbnail: product.thumbnail
+                }
                 result.msg = "Product sended successfully"
                 result.data = product
             } else {
