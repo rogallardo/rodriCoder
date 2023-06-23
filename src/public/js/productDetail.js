@@ -4,9 +4,9 @@ function addingEventListenertoAddtoCartBtn(){
     btnAddtoCart.forEach(btn=>{
        btn.addEventListener("click", (e)=>{
         const idProduct = e.target.id
-        //cart=648752d1f9a4e463ea96a97a
+        const idCart = '648752d1f9a4e463ea96a97a'
 
-        fetch(`http://localhost:8080/api/carts/648752d1f9a4e463ea96a97a/products/${idProduct}`, {
+        fetch(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, {
             method: 'POST',
             headers: {'ContentType': 'application/json'}
 

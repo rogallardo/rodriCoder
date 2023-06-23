@@ -23,7 +23,6 @@ routerProductsView.get('/', async (req, res)=>{
 routerProductsView.get('/:pid', async (req, res)=>{
     let { pid } = req.params
     let {error, msg, data} = await productService.getProductById(pid)
-    console.log(data)
     res.render('productDetail', {data})
 })
 //rutas carrito
