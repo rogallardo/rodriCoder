@@ -1,11 +1,31 @@
 import { CartModel } from "../DAO/models/cart.model.js";
  class CartService {
-    async getCart(id){
-    const result = {
-        error: false,
-        msg: "",
-        data: {}
+    async createCart(){
+        const result = {
+            error: false,
+            msg: "",
+            data: {}
+        }
+        const newCart = {
+            products: []
+        }
+        const createdCart = await CartModel.create(newCart)
+        if(createdCart){
+            result.data = createdCart
+            result.msg = 'Cart created'
+        }else{
+            result.error = true
+            result.msg = 'Cannot create new cart, something went wrong'
+        }
+       return result
+       
     }
+    async getCart(id){
+        const result = {
+            error: false,
+            msg: "",
+            data: {}
+        }
        const cart = await CartModel.findById(id).populate('products.product')
        let { products } = cart
        const docsNormalized = products.map(item => {  

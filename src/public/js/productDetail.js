@@ -16,7 +16,7 @@ function addingEventListenertoAddtoCartBtn(){
             if(!error){
                 Swal.fire({
                     icon: 'success',
-                    title: 'Product added to cart: 648752d1f9a4e463ea96a97a',
+                    title: 'Product added to cart',
                   })
             }
         })

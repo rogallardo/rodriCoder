@@ -43,7 +43,6 @@ class ProductService {
             let nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
             
             result.data = docsNormalized
-            console.log(result.data)
             result.msg = "Products sended successfully"
             result.paginate = {
                 page,

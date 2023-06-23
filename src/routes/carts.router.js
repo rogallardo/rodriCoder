@@ -5,10 +5,34 @@ export const routerCarts = express.Router()
 routerCarts.get('/:cid', async (req, res)=>{
 let { cid } = req.params
 
-const cart = await cartService.getCart(cid)
+let {error, msg, data}= await cartService.getCart(cid)
+if(error){
+    return res.status(500).json({
+        error,
+        msg,
+        data
+    })
+}
 return res.json({
-    data: cart
+        error,
+        msg,
+        data
+    })
 })
+routerCarts.post('/', async (req, res)=>{
+    let {error, msg, data} = await cartService.createCart()        
+    if(error){
+        return res.status(500).json({
+            error,
+            msg,
+            data
+        })
+    }
+    return res.json({
+            error,
+            msg,
+            data
+        })
 })
 routerCarts.post('/:cid/products/:pid', async (req, res)=>{
     let { cid, pid } = req.params
