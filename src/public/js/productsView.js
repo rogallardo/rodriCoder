@@ -1,6 +1,6 @@
 let btnAddtoCart = document.querySelectorAll('.btn-primary')
 
-function addingEventListenertoAddtoCartBtn(){    
+function addingEventListenertoAddtoCartBtn(){
     btnAddtoCart.forEach(btn=>{
        btn.addEventListener("click", (e)=>{
         const idProduct = e.target.id
