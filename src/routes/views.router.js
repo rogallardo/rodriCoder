@@ -1,15 +1,20 @@
 import express from "express";
 import { productService } from "../services/products.service.js";
 import { cartService } from "../services/carts.services.js";
+import { checkUser } from "../middlewares/auth.js";
 
  export const routerProductsView = express.Router()
  export const routerCartView = express.Router()
+ export const routerAuthView = express.Router()
 
-//rutas productos
-routerProductsView.get('/', async (req, res)=>{
+
+//render productos
+routerProductsView.get('/', checkUser, async (req, res)=>{
+    let {firstName, lastName, email, isAdmin} = req.session
+    const user = {firstName, lastName, email, isAdmin}
     const originalURL = req.originalUrl
     let { page, limit, category, sort, order } = req.query
-    const queries = {page, limit, category, sort, order, originalURL}
+    const queries = {page, limit, category, sort, order, originalURL }
     let {error, msg, data, paginate} = await productService.getProducts(queries)  
     paginate.prevLink = paginate.hasPrevPage ? paginate.prevLink.replace('/api', '') : paginate.prevLink
     paginate.nextLink = paginate.hasNextPage ? paginate.nextLink.replace('/api', '') : paginate.nextLink
@@ -17,7 +22,8 @@ routerProductsView.get('/', async (req, res)=>{
         paginate.prevLink = paginate.hasPrevPage ? originalURL.replace(`?page=${page}`, `?page=${paginate.prevPage}`) : null
         paginate.nextLink = paginate.hasNextPage ? originalURL.replace(`?page=${page}`, `?page=${paginate.nextPage}`) : null
     }
-    res.render('products', {data, paginate})
+    
+    res.render('products', {data, paginate, user})
 
 })
 routerProductsView.get('/:pid', async (req, res)=>{
@@ -25,9 +31,27 @@ routerProductsView.get('/:pid', async (req, res)=>{
     let {error, msg, data} = await productService.getProductById(pid)
     res.render('productDetail', {data})
 })
-//rutas carrito
+//render carrito
 routerCartView.get('/:cid', async (req, res)=>{
     let {cid} = req.params
     let {error, msg, data} = await cartService.getCart(cid)   
     res.render('cart', {data})
+})
+//render register
+routerAuthView.get('/register', (req, res)=>{
+    res.render('register')
+})
+//render login
+routerAuthView.get('/login', (req, res)=>{
+    res.render('login')
+})
+//get al logout
+routerAuthView.get('/logout', (req, res)=>{
+    req.session.destroy((error)=>{
+        if(error){
+            let errorMsg = 'Error al cerrar sesion'
+            return res.render('error-page', errorMsg)
+        }
+    })
+    return res.redirect('/login')
 })

@@ -12,20 +12,15 @@ class ProductService {
             paginate: {}
         }
         try {
-            let { page, limit, category, sort, order, originalURL } = queries
-            category = category ? { category } : {}
-
+            let { page, limit, category, sort, order } = queries
+            const filterQuery = category ? {category} : {}
             const options = {
                 page: page || 1,
                 limit: limit || 4,
+                sort: sort ? {[sort]: order === 'asc' ? 1 : -1 } : {}
             };
-            if (sort) {
-                options.sort = {
-                    [sort]: order === 'asc' ? 1 : -1
-                }
-            }
 
-            let products = await ProductModel.paginate(category, options)
+            let products = await ProductModel.paginate(filterQuery, options)
             const docsNormalized = products.docs.map(doc => {
                 return {
                     id: doc._id.toString(),
@@ -56,6 +51,7 @@ class ProductService {
                 prevLink,
                 nextLink
             }
+            
             return result
         } catch (error) {
             result.error = true
@@ -106,16 +102,7 @@ class ProductService {
             msg: "",
             data: {}
         }
-        let {
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnail
-        } = newProduct
+        let { title, description, code, price, status, stock, category,thumbnail} = newProduct
         if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail) {
             result.error = true
             result.msg = "Error, please complete the fields"
@@ -128,7 +115,7 @@ class ProductService {
                 return result
             } catch (error) {
                 result.error = true,
-                    result.msg = "Cannot add a product, something wrong with db"
+                result.msg = "Cannot add a product, something wrong with db"
                 result.data = {}
                 return result
             }

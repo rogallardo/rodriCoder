@@ -246,3 +246,10 @@
 .table{
     margin-top: 10px;
 }
+/*logout-btn*/
+.logout-btn{
+  position: absolute;
+  top: 0;
+  right: 0;
+ 
+}
