@@ -18,9 +18,6 @@ routerAuth.post('/register', passport.authenticate('register', {failureRedirect:
 //post al login
 routerAuth.post('/login', passport.authenticate('login', {failureRedirect: '/api/session/error-login'}) , async (req, res)=>{
     req.session.user = { email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin}
-    if(req.user.email == 'adminCoder@coder.com' && req.user.password === 'adminCod3r123'){
-        req.session.user.isAdmin = true
-    }  
     return res.redirect('/products')
 })
 routerAuth.get('/error-login', (req, res)=>{

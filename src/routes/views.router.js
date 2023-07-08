@@ -1,7 +1,7 @@
 import express from "express";
 import { productService } from "../services/products.service.js";
 import { cartService } from "../services/carts.services.js";
-import { checkUser } from "../middlewares/auth.js";
+import { checkIsAdmin, checkUser } from "../middlewares/auth.js";
 
  export const routerProductsView = express.Router()
  export const routerCartView = express.Router()
@@ -9,7 +9,7 @@ import { checkUser } from "../middlewares/auth.js";
 
 
 //render products
-routerProductsView.get('/', checkUser, async (req, res)=>{
+routerProductsView.get('/', checkUser, checkIsAdmin, async (req, res)=>{
     let {firstName, lastName, email, isAdmin} = req.session.user
     const user = {firstName, lastName, email, isAdmin}
     const originalURL = req.originalUrl
