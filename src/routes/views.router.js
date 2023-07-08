@@ -10,7 +10,7 @@ import { checkUser } from "../middlewares/auth.js";
 
 //render products
 routerProductsView.get('/', checkUser, async (req, res)=>{
-    let {firstName, lastName, email, isAdmin} = req.session
+    let {firstName, lastName, email, isAdmin} = req.session.user
     const user = {firstName, lastName, email, isAdmin}
     const originalURL = req.originalUrl
     let { page, limit, category, sort, order } = req.query

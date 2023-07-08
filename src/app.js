@@ -13,6 +13,9 @@ import { routerAuthView } from './routes/views.router.js';
 import handlebars from "express-handlebars";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import passport from 'passport';
+import { passportInit } from './config/passport.config.js';
+
 
 const app = express();
 const port = 8080; 
@@ -23,7 +26,14 @@ app.use(session({
   store: MongoStore.create({mongoUrl: 'mongodb+srv://rodrigogastongallardo:CRPPTDfZPNoXaNbx@cluster0.50ffnbf.mongodb.net/ecommerce?retryWrites=true&w=majority', ttl: 7200}),
   secret: 'keyboard cat', 
   resave: false, 
-  saveUninitialized: true,}))
+  saveUninitialized: true
+}));
+
+//passport
+passportInit()
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 //handlebars configuration
 app.engine("handlebars", handlebars.engine());
@@ -59,6 +69,7 @@ const socketServer = new Server(httpServer)
 
 //lo seteo a nivel global
 app.set('socketServer', socketServer)
+
 
 
 

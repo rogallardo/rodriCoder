@@ -1,18 +1,14 @@
 import express from 'express'
-import {UserModel} from '../DAO/models/user.model.js'
+import passport from 'passport'
 
 export const routerAuth = express.Router()
 //post al register
-routerAuth.post('/register', async (req, res)=>{
+routerAuth.post('/register', passport.authenticate('register', {failureRedirect: '/api/session/error-register' }), async (req, res)=>{
     try {
-        const {firstName, lastName, email, password} = req.body
-        if(!firstName || !lastName || !email || !password){
-            return res.render('error-page')
+        if(!req.user){
+          return res.redirect('/api/session/error-register') 
         }
-        const user = await UserModel.create({firstName, lastName, email, password})
-        req.session.email = email
-        req.session.firstName = firstName
-        req.session.lastName = lastName
+        req.session.user = { email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName}
         return res.redirect('/products')
     } catch (error) {
         let errorMsg = 'Error al registrar, pruebe con otro email'
@@ -20,36 +16,19 @@ routerAuth.post('/register', async (req, res)=>{
     }
 })
 //post al login
-routerAuth.post('/login', async (req, res)=>{
-    try {
-        let errorMsg = null
-        const {email, password} = req.body
-        if(!email || !password){
-            errorMsg = 'Error, por favor complete los campos'
-            return res.render('error-page', {errorMsg})
-        }
-        if(email === 'adminCoder@coder.com' && password === 'adminCod3r123'){
-            req.session.email = email
-            req.session.firstName = 'Profe'
-            req.session.lastName = ''
-            req.session.isAdmin = true
-            return res.redirect('/products')
-        }
-        const foundUser = await UserModel.findOne({email})
-        if(foundUser && foundUser.password === password){
-            req.session.email = foundUser.email
-            req.session.firstName = foundUser.firstName
-            req.session.lastName = foundUser.lastName
-            req.session.isAdmin = foundUser.isAdmin
-            return res.redirect('/products')
-        }
-        errorMsg = 'Error al ingresar, por favor verifique los campos'
-        return res.render('error-page', {errorMsg})
-    } catch (error) {
-        let errorMsg = null
-        errorMsg = 'Error al ingresar, intente nuevamente'
-        return res.render('error-page', {errorMsg}) 
+routerAuth.post('/login', passport.authenticate('login', {failureRedirect: '/api/session/error-login'}) , async (req, res)=>{
+    req.session.user = { email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin}
+    if(req.user.email == 'adminCoder@coder.com' && req.user.password === 'adminCod3r123'){
+        req.session.user.isAdmin = true
     }  
+    return res.redirect('/products')
+})
+routerAuth.get('/error-login', (req, res)=>{
+    res.send('error de login con passport')
+})
+//error register page
+routerAuth.get('/error-register', (req, res)=>{
+    res.send('error de register con passport')
 })
 //get logout
 routerAuth.get('/logout', (req, res)=>{
