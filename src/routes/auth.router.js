@@ -34,7 +34,7 @@ routerAuth.post('/login', async (req, res)=>{
             req.session.lastName = ''
             req.session.isAdmin = true
             return res.redirect('/products')
-            }
+        }
         const foundUser = await UserModel.findOne({email})
         if(foundUser && foundUser.password === password){
             req.session.email = foundUser.email
@@ -50,4 +50,14 @@ routerAuth.post('/login', async (req, res)=>{
         errorMsg = 'Error al ingresar, intente nuevamente'
         return res.render('error-page', {errorMsg}) 
     }  
+})
+//get logout
+routerAuth.get('/logout', (req, res)=>{
+    req.session.destroy((error)=>{
+        if(error){
+            let errorMsg = 'Error al cerrar sesion'
+            return res.render('error-page', errorMsg)
+        }
+    })
+    return res.redirect('/login')
 })

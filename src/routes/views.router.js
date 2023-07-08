@@ -8,7 +8,7 @@ import { checkUser } from "../middlewares/auth.js";
  export const routerAuthView = express.Router()
 
 
-//render productos
+//render products
 routerProductsView.get('/', checkUser, async (req, res)=>{
     let {firstName, lastName, email, isAdmin} = req.session
     const user = {firstName, lastName, email, isAdmin}
@@ -31,7 +31,7 @@ routerProductsView.get('/:pid', async (req, res)=>{
     let {error, msg, data} = await productService.getProductById(pid)
     res.render('productDetail', {data})
 })
-//render carrito
+//render cart
 routerCartView.get('/:cid', async (req, res)=>{
     let {cid} = req.params
     let {error, msg, data} = await cartService.getCart(cid)   
@@ -45,13 +45,4 @@ routerAuthView.get('/register', (req, res)=>{
 routerAuthView.get('/login', (req, res)=>{
     res.render('login')
 })
-//get al logout
-routerAuthView.get('/logout', (req, res)=>{
-    req.session.destroy((error)=>{
-        if(error){
-            let errorMsg = 'Error al cerrar sesion'
-            return res.render('error-page', errorMsg)
-        }
-    })
-    return res.redirect('/login')
-})
+

@@ -31,9 +31,11 @@ app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "handlebars");
 
 //endpoints
+//api
 app.use('/api/products/', routerProducts)
 app.use('/api/carts/', routerCarts)
 app.use('/api/session/', routerAuth)
+//views
 app.use('/products', routerProductsView)
 app.use('/cart', routerCartView)
 app.use('/', routerAuthView)
