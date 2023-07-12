@@ -2,6 +2,12 @@ import express from 'express'
 import passport from 'passport'
 
 export const routerAuth = express.Router()
+//get google session
+// routerAuth.get('/google', passport.authenticate('google', {scope: ['profile']}))
+// routerAuth.get('/googlecallback', passport.authenticate('google', {failureRedirect: '/api/sessions/error-google'}))
+// routerAuth.get('/error-google', (req, res)=>{
+//     res.send('error al ingresar con Google')
+// });
 //get github session
 routerAuth.get('/github', passport.authenticate('github', {scope: ['user: email']}));
 routerAuth.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/api/sessions/error-github' }), async (req, res)=>{

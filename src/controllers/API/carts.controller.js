@@ -77,7 +77,7 @@ export const cartsController = {
          data
         })
      
-     },
+    },
      deleteProductInCart: async (req, res)=>{
         let { cid, pid } = req.params
         let {error, msg, data} = await cartService.deleteProductInCart(cid, pid)
