@@ -2,11 +2,21 @@ import express from 'express'
 import passport from 'passport'
 
 export const routerAuth = express.Router()
+//get github session
+routerAuth.get('/github', passport.authenticate('github', {scope: ['user: email']}));
+routerAuth.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/api/sessions/error-github' }), async (req, res)=>{
+    req.session.user = req.user;
+    res.redirect('/products')
+});
+//error github access
+routerAuth.get('/error-github', (req, res)=>{
+    res.send('error al ingresar con github')
+});
 //post al register
-routerAuth.post('/register', passport.authenticate('register', {failureRedirect: '/api/session/error-register' }), async (req, res)=>{
+routerAuth.post('/register', passport.authenticate('register', {failureRedirect: '/api/sessions/error-register' }), async (req, res)=>{
     try {
         if(!req.user){
-          return res.redirect('/api/session/error-register') 
+          return res.redirect('/api/sessions/error-register') 
         }
         req.session.user = { email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName}
         return res.redirect('/products')
@@ -14,19 +24,20 @@ routerAuth.post('/register', passport.authenticate('register', {failureRedirect:
         let errorMsg = 'Error al registrar, pruebe con otro email'
         return res.render('error-page', {errorMsg})
     }
-})
-//post al login
-routerAuth.post('/login', passport.authenticate('login', {failureRedirect: '/api/session/error-login'}) , async (req, res)=>{
-    req.session.user = { email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin}
-    return res.redirect('/products')
-})
-routerAuth.get('/error-login', (req, res)=>{
-    res.send('error de login con passport')
-})
+});
 //error register page
 routerAuth.get('/error-register', (req, res)=>{
     res.send('error de register con passport')
-})
+});
+//post al login
+routerAuth.post('/login', passport.authenticate('login', {failureRedirect: '/api/sessions/error-login'}) , async (req, res)=>{
+    req.session.user = { email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin}
+    return res.redirect('/products')
+});
+// error login page
+routerAuth.get('/error-login', (req, res)=>{
+    res.send('error de login con passport')
+});
 //get logout
 routerAuth.get('/logout', (req, res)=>{
     req.session.destroy((error)=>{
@@ -36,4 +47,4 @@ routerAuth.get('/logout', (req, res)=>{
         }
     })
     return res.redirect('/login')
-})
+});

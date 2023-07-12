@@ -1,11 +1,11 @@
 import express from "express";
-import { productService } from "../services/products.service.js";
-import { cartService } from "../services/carts.services.js";
-import { checkIsAdmin, checkUser } from "../middlewares/auth.js";
+import { productService } from "../../services/products.service.js";
+import { cartService } from "../../services/carts.services.js";
+import { checkIsAdmin, checkUser } from "../../middlewares/auth.js";
 
- export const routerProductsView = express.Router()
- export const routerCartView = express.Router()
- export const routerAuthView = express.Router()
+export const routerProductsView = express.Router()
+export const routerCartView = express.Router()
+export const routerAuthView = express.Router()
 
 
 //render products

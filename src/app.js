@@ -3,13 +3,10 @@ import path from 'path'
 import { __dirname } from './utils/utils.js';
 import { Server } from 'socket.io';
 import { connectionMongo } from './utils/utils.js';
-import { routerProducts } from './routes/products.router.js';
-import { routerCarts} from './routes/carts.router.js';
-import { routerAuth }from './routes/auth.router.js'
-import { routerProductsView } from './routes/views.router.js';
-import { routerCartView } from './routes/views.router.js';
-import { routerAuthView } from './routes/views.router.js';
-//import { routerRealTimeProducts } from './routes/realTimeProducts.router.js';
+import { routerProducts } from './routes/API/products.router.js';
+import { routerCarts} from './routes/API/carts.router.js';
+import { routerAuth }from './routes/API/auth.router.js'
+import { routerProductsView, routerAuthView, routerCartView } from './routes/views/views.router.js'
 import handlebars from "express-handlebars";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -44,7 +41,7 @@ app.set("view engine", "handlebars");
 //api
 app.use('/api/products/', routerProducts)
 app.use('/api/carts/', routerCarts)
-app.use('/api/session/', routerAuth)
+app.use('/api/sessions/', routerAuth)
 //views
 app.use('/products', routerProductsView)
 app.use('/cart', routerCartView)

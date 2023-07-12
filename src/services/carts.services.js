@@ -1,5 +1,6 @@
 import { CartModel } from "../DAO/models/cart.model.js";
- class CartService {
+
+class CartService {
     async createCart(){
         const result = {
             error: false,
