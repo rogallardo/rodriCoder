@@ -26,6 +26,11 @@ export const UserModel = model('users', new Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    cart: {
+        type: String,
+        unique: true,
+        default: null
     }
 
 }))

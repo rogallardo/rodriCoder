@@ -1,19 +1,35 @@
 let btnAddtoCart = document.querySelectorAll('.btn-addToCart')
+let btnGoToCart = document.getElementById('goToCartBtn')
 
+let idCart = null
 function addingEventListenertoAddtoCartBtn(){
     btnAddtoCart.forEach(btn=>{
-       btn.addEventListener("click", (e)=>{
+       btn.addEventListener("click", async (e)=>{
         const idProduct = e.target.id
-        const idCart = '648752d1f9a4e463ea96a97a'
+        const res = await fetch('http://localhost:8080/api/sessions/current')
+       const {payload} = await res.json()
+       idCart = payload.cart
 
-        fetch(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, {
+       if(!idCart){
+        const response = await fetch('http://localhost:8080/api/carts', {
+            method: 'POST',
+            headers: {'ContentType': 'application/json'}
+        })
+        const newCart = await response.json()
+        idCart = newCart.data._id.toString()
+       }
+       const urlAddToCart = `http://localhost:8080/api/carts/${idCart}/products/${idProduct}`
+       console.log(urlAddToCart)
+        fetch(urlAddToCart, {
             method: 'POST',
             headers: {'ContentType': 'application/json'}
 
         })
+        
         .then(res=> res.json())
         .then(data=> {let { error } = data
             if(!error){
+                console.log(data)
                 Swal.fire({
                     icon: 'success',
                     title: 'Product added to cart',
@@ -28,4 +44,17 @@ function addingEventListenertoAddtoCartBtn(){
        })
     })
  }
- addingEventListenertoAddtoCartBtn()
+ function addingEventListenertoGotoCartBtn(){
+    btnGoToCart.addEventListener("click", async ()=>{
+    const res = await fetch('http://localhost:8080/api/sessions/current')
+    const {payload} = await res.json()
+    idCart = payload.cart
+       if(idCart){
+        window.location.href = `http://localhost:8080/cart/${idCart}`
+       }
+    })
+ 
+ }
+
+ addingEventListenertoAddtoCartBtn();
+ addingEventListenertoGotoCartBtn();

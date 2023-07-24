@@ -29,6 +29,7 @@ routerProductsView.get('/', checkUser, checkIsAdmin, async (req, res)=>{
 routerProductsView.get('/:pid', async (req, res)=>{
     let { pid } = req.params
     let {error, msg, data} = await productService.getProductById(pid)
+
     res.render('productDetail', {data})
 })
 //render cart

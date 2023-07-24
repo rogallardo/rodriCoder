@@ -6,7 +6,7 @@ import { connectionMongo } from './utils/utils.js';
 import { routerProducts } from './routes/API/products.router.js';
 import { routerCarts} from './routes/API/carts.router.js';
 import { routerAuth }from './routes/API/auth.router.js'
-import { routerProductsView, routerAuthView, routerCartView } from './routes/views/views.router.js'
+import { routerProductsView, routerAuthView, routerCartView } from './routes/view/views.router.js'
 import handlebars from "express-handlebars";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -60,7 +60,6 @@ const httpServer = app.listen(port, () => {
 
 //mongoDB
 connectionMongo()
-
 //socket
 const socketServer = new Server(httpServer)
 

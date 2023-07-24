@@ -10,42 +10,42 @@ import { isValidPassword } from "../utils/utils.js";
 export function passportInit() {
     const LocalStrategy = local.Strategy
 
-    // passport.use(
-    //     'google',
-    //     new GoogleStrategy({
-    //         clientID: '781863108818-bmc17tfcfek0m99aah8qpnnsqs0g7u4v.apps.googleusercontent.com',
-    //         clientSecret: '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',
-    //         callbackURL: "http://localhost:8080/api/sessions/googlecallback"
-    //     },
-    //     async function (accessToken, refreshToken, profile, done) {
-    //         // try{
-    //         //     let user = await UserModel.findOne({
-    //         //         email: profile.email
-    //         //     });
-    //         //     if (!user) {
-    //         //         const newUser = {
-    //         //             email: profile.email,
-    //         //             firstName: profile._json.name || profile._json.login || 'noname',
-    //         //             lastName: 'nolast',
-    //         //             isAdmin: false,
-    //         //             password: 'nopass',
-    //         //         };
-    //         //         let userCreated = await UserModel.create(newUser);
-    //         //         console.log('User Registration succesful');
-    //         //         return done(null, userCreated);
-    //         //     } else {
-    //         //         console.log('User already exists');
-    //         //         return done(null, user);
-    //         //     }
-    //         // } catch (e) {
-    //         //     console.log('Error en auth Google');
-    //         //     console.log(e);
-    //         //     return done(e);
-    //         // }
-    //         console.log(profile)
+    passport.use(
+        'google',
+        new GoogleStrategy({
+            clientID: '781863108818-bmc17tfcfek0m99aah8qpnnsqs0g7u4v.apps.googleusercontent.com',
+            clientSecret: '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',
+            callbackURL: "http://localhost:8080/api/sessions/googlecallback"
+        },
+        async function (accessToken, refreshToken, profile, done) {
+            try{
+                let user = await UserModel.findOne({
+                    email: profile._json.email
+                });
+                if (!user) {
+                    const newUser = {
+                        email: profile._json.email,
+                        firstName: profile._json.given_name || profile._json.name || 'noname',
+                        lastName: profile._json.family_name || 'nolast',
+                        isAdmin: false,
+                        password: 'nopass',
+
+                    };
+                    let userCreated = await UserModel.create(newUser);
+                    console.log('User Registration succesful');
+                    return done(null, userCreated);
+                } else {
+                    console.log('User already exists');
+                    return done(null, user);
+                }
+            } catch (e) {
+                console.log('Error en auth Google');
+                console.log(e);
+                return done(e);
+            }
             
-    //     }
-    // ));
+        }
+    ));
     passport.use(
         'github',
         new GitHubStrategy({
