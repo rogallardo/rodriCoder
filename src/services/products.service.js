@@ -1,4 +1,5 @@
-import {ProductModel} from "../DAO/models/product.model.js";
+import { productsModel } from "../DAO/mongodb/products.model.js";
+// import { productsModel } from "../DAO/memory/products.model.memory.js";
 
 class ProductService {
     async getProducts(queries) {
@@ -17,8 +18,9 @@ class ProductService {
                 sort: sort ? {[sort]: order === 'asc' ? 1 : -1 } : {}
             };
 
-            let products = await ProductModel.paginate(filterQuery, options)
-            const docsNormalized = products.docs.map(doc => {
+            let products = await productsModel.getAll(filterQuery, options)
+            if(products.docs){
+                const docsNormalized = products.docs.map(doc => {
                 return {
                     id: doc._id.toString(),
                     title: doc.title,
@@ -48,48 +50,48 @@ class ProductService {
                 prevLink,
                 nextLink
             }
+            }else{
+                result.data = products
+                result.msg = "Products sended successfully"
+            }
+            
             
             return result
         } catch (error) {
             result.error = true
             result.msg = "Error trying to get products"
-            console.log(error)
+
             return result
         }
     }
-    async getProductById(id) {
+    async getProductById(pid) {
         const result = {
             error: false,
             msg: "",
             data: {}
         }
         try {
-            let product = await ProductModel.findById(id)
-            if (product != null) {
+            let product = await productsModel.getById(pid)
+            if(product._id){ 
                 const id = product._id.toString()
-                product = {id, 
-                    title: product.title,
-                    description: product.description,
-                    code: product.code,
-                    price: product.price,
-                    status: product.status,
-                    stock: product.stock,
-                    category: product.category,
-                    thumbnail: product.thumbnail
-                }
-                result.msg = "Product sended successfully"
-                result.data = product
-            } else {
-                result.error = true
-                result.msg = "Product was deleted, or doesn't exist"
-                result.data = {}
-            }
-
+                product = {
+                id, 
+                title: product.title,
+                description: product.description,
+                code: product.code,
+                price: product.price,
+                status: product.status,
+                stock: product.stock,
+                category: product.category,
+                thumbnail: product.thumbnail
+                }    
+            } 
+            result.msg = "Product sended successfully"
+            result.data = product
             return result
         } catch (error) {
             result.error = true
-            result.msg = "Error trying to get product"
-            console.log(error)
+            result.msg = "Error trying to get product, please checkID"
             return result
         }
     }
@@ -106,7 +108,7 @@ class ProductService {
             return result
         } else {
             try {
-                const createdProduct = await ProductModel.create(newProduct)
+                const createdProduct = await productsModel.create(newProduct)
                 result.msg = "Product added"
                 result.data = createdProduct
                 return result
@@ -118,7 +120,7 @@ class ProductService {
             }
         }
     }
-    async updateProduct(id, productUpdated) {
+    async updateProduct(pid, productToUpdate) {
         const result = {
             error: false,
             msg: "",
@@ -133,34 +135,41 @@ class ProductService {
             stock,
             category,
             thumbnail
-        } = productUpdated
+        } = productToUpdate
         if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail) {
             result.error = true
             result.msg = "Error, please complete the fields"
             return result
         } else {
             try {
-                const productToUpdate = await ProductModel.findByIdAndUpdate(id, productUpdated)
-                result.msg = "Product updated"
-                result.data = productUpdated
+                const updatedProduct = await productsModel.update(pid, productToUpdate)
+                if(updatedProduct){
+                    result.msg = "Product updated"
+                    result.data = updatedProduct
+                }else{
+                    result.error = true,
+                    result.msg = "Cannot update product, please check ID"
+                    result.data = {}
+                }
+
                 return result
             } catch (error) {
                 result.error = true,
-                    result.msg = "Cannot update product, something wrong with db"
+                result.msg = "Error in server"
                 result.data = {}
                 return result
             }
         }
     }
-    async deleteProductById(id) {
+    async deleteProductById(pid) {
         const result = {
             error: false,
             msg: "",
             data: {}
         }
         try {
-            const deletedProduct = await ProductModel.findByIdAndDelete(id)
-            if (deletedProduct != null) {
+            const deletedProduct = await productsModel.deleteById(pid)
+            if (deletedProduct) {
                 result.msg = "Product deleted"
                 result.data = deletedProduct
             } else {
@@ -172,9 +181,8 @@ class ProductService {
             return result
 
         } catch (error) {
-            console.log(error)
             result.error = true,
-                result.msg = "Cannot delete product, please check ID"
+            result.msg = "Cannot delete product. Error: " + error
             return result
         }
 

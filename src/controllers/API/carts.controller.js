@@ -1,6 +1,6 @@
 import express from 'express';
 import { cartService } from '../../services/carts.services.js';
-import { UserModel } from '../../DAO/models/user.model.js';
+import { UserModel } from '../../DAO/mongodb/models/user.model.js';
 export const cartsController = {
     getCartById: async (req, res)=>{
         let { cid } = req.params        
@@ -21,9 +21,8 @@ export const cartsController = {
     createCart: async (req, res)=>{
         let {error, msg, data} = await cartService.createCart() 
        if (req.user){ 
-        req.user.cart = data._id
-
-    let userCartUpdate = await UserModel.findByIdAndUpdate(req.user._id, {cart: req.user.cart})
+            req.user.cart = data._id
+            let userCartUpdate = await UserModel.findByIdAndUpdate(req.user._id, {cart: req.user.cart})
        } 
         if(error){
             return res.status(500).json({

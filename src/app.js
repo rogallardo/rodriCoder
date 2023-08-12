@@ -6,7 +6,7 @@ import { connectionMongo } from './utils/utils.js';
 import { routerProducts } from './routes/API/products.router.js';
 import { routerCarts} from './routes/API/carts.router.js';
 import { routerAuth }from './routes/API/auth.router.js'
-import { routerProductsView, routerAuthView, routerCartView } from './routes/view/views.router.js'
+import { routerProductsView, routerAuthView, routerCartView, routerRealTimeProducts } from './routes/view/views.router.js'
 import handlebars from "express-handlebars";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -48,7 +48,7 @@ app.use('/cart', routerCartView)
 app.use('/', routerAuthView)
 
 
-//app.use('/api/realtimeproducts/', routerRealTimeProducts)
+app.use('/realtimeproducts', routerRealTimeProducts)
 
 app.get("*", (req, res) => {
   res.status(404).send("error, route not found");

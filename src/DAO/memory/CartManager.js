@@ -1,7 +1,7 @@
-//import { JSONreader, JSONwriter } from './helpers/helpers.js'
+import { JSONreader, JSONwriter } from "../../helpers/helpers.js"
 
-//exportar para usar
-  class CartManager {
+
+export class CartManager {
     constructor(){
         this.carts = []
         this.path =  '/src/db/carts.json'

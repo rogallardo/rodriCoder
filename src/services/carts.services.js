@@ -1,5 +1,4 @@
-import { CartModel } from "../DAO/models/cart.model.js";
-
+import { cartsModel } from "../DAO/mongodb/carts.model.js"
 class CartService {
     async createCart(){
         const result = {
@@ -10,7 +9,7 @@ class CartService {
         const newCart = {
             products: []
         }
-        const createdCart = await CartModel.create(newCart)
+        const createdCart = await cartsModel.create(newCart)
         if(createdCart){
             result.data = createdCart
             result.msg = 'Cart created'
@@ -27,7 +26,7 @@ class CartService {
             msg: "",
             data: {}
         }
-       const cart = await CartModel.findById(id).populate('products.product')
+       const cart = await cartsModel.getById(id)
        let { products } = cart
        const docsNormalized = products.map(item => {  
         const plainItem = item.toObject()
@@ -46,17 +45,17 @@ class CartService {
             msg: "",
             data: {}
         }
-        const foundCart = await CartModel.findById(cid)
+        const foundCart = await cartsModel.getById(cid)
         const productToAdd = {product: pid, quantity: 1}
         if(foundCart){
             let { products } = foundCart
-            let foundProduct = products.find(product=> product.product == pid)
+            let foundProduct = products.find(product=> product.product._id.toString() == pid)
             if(foundProduct){
                 foundProduct.quantity = foundProduct.quantity + 1
             }else{
                 products.push(productToAdd)
             }            
-            const addToCart = await CartModel.updateOne({_id: cid}, foundCart)
+            await cartsModel.update(cid, foundCart)
             result.msg = 'Product added'
             result.data = foundCart
         }else{
@@ -71,10 +70,10 @@ class CartService {
             msg: "",
             data: {}
         }
-        const foundCart = await CartModel.findById(cid)
+        const foundCart = await cartsModel.getById(cid)
         if(foundCart){
             foundCart.products = newCartProducts
-            const updateProductCartInDb = await CartModel.findByIdAndUpdate(cid, foundCart)
+            await cartsModel.update(cid, foundCart)
             result.msg = 'Cart products updated'
             result.data = newCartProducts
         }else{
@@ -90,13 +89,13 @@ class CartService {
             data: {}
         }
         let { quantity, cid, pid } = updatedProduct
-        const foundCart = await CartModel.findById(cid)
+        const foundCart = await cartsModel.getById(cid)
         if(foundCart){
             let { products } = foundCart
             let foundProduct = products.find(product=> product.product == pid)           
             if(foundProduct){
                 foundProduct.quantity = quantity
-                const updateProductCartInDb = await CartModel.findByIdAndUpdate(cid, foundCart)
+                await cartsModel.update(cid, foundCart)
                 result.msg = 'Product quantity updated'
                 result.data = foundCart
                 return result
@@ -118,13 +117,13 @@ class CartService {
             msg: "",
             data: {}
         }
-        const foundCart = await CartModel.findById(cid) 
+        const foundCart = await cartsModel.getById(cid) 
         if(foundCart){
             let { products } = foundCart
             let foundProduct = products.find(product => product.product == pid)           
             if(foundProduct){
                 foundCart.products = products.filter(product => product.product != pid)
-                const deleteProductInCart = await CartModel.findByIdAndUpdate(cid, foundCart)
+                const deleteProductInCart = await cartsModel.update(cid, foundCart)
                 result.msg = 'Product in cart deleted'
                 result.data = foundCart
                 return result
@@ -139,16 +138,16 @@ class CartService {
             return result
         }
     }
-    async deleteAllProductsInCart(cid, pid){
+    async deleteAllProductsInCart(cid){
         const result = {
             error: false,
             msg: "",
             data: {}
         }
-        const foundCart = await CartModel.findById(cid) 
+        const foundCart = await cartsModel.getById(cid) 
         if(foundCart){        
             foundCart.products = []
-            const deleteAll = await CartModel.findByIdAndUpdate(cid, foundCart)
+            await cartsModel.update(cid, foundCart)
             result.msg = 'The cart is empty now'
             result.data = foundCart
         }else{

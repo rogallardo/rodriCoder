@@ -31,5 +31,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
+  },
+  "nodemonConfig": {
+    "ignore": ["src/DAO/memory/db/products.json", "src/DAO/memory/db/carts.json"]
   }
 }

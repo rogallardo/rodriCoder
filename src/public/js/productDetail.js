@@ -1,60 +1,73 @@
-let btnAddtoCart = document.querySelectorAll('.btn-addToCart')
+//DOM elements
+let btnAddtoCart = document.querySelector('.btn-addToCart')
 let btnGoToCart = document.getElementById('goToCartBtn')
-
+//global variables, will be helpfull with fetching params in the urls
 let idCart = null
-function addingEventListenertoAddtoCartBtn(){
-    btnAddtoCart.forEach(btn=>{
-       btn.addEventListener("click", async (e)=>{
-        const idProduct = e.target.id
-        const res = await fetch('http://localhost:8080/api/sessions/current')
-       const {payload} = await res.json()
-       idCart = payload.cart
-
-       if(!idCart){
-        const response = await fetch('http://localhost:8080/api/carts', {
-            method: 'POST',
-            headers: {'ContentType': 'application/json'}
-        })
-        const newCart = await response.json()
-        idCart = newCart.data._id.toString()
-       }
-       const urlAddToCart = `http://localhost:8080/api/carts/${idCart}/products/${idProduct}`
-       console.log(urlAddToCart)
-        fetch(urlAddToCart, {
-            method: 'POST',
-            headers: {'ContentType': 'application/json'}
-
-        })
-        
-        .then(res=> res.json())
-        .then(data=> {let { error } = data
-            if(!error){
-                console.log(data)
+let idProduct = null
+// helpers fetchdata function
+async function fetchData(url, method) {
+    let options = {
+        method: method,
+        headers: {
+            'ContentType': 'application/json'
+        }
+    }
+    if (method == 'GET') {
+        options = undefined
+    }
+    const response = await fetch(url, options)
+    const data = await response.json()
+    return data
+}
+//adding eventslisteners to btns, also fetching post to create cart in case that user has no one 
+async function addingEventListenertoAddtoCartBtn() {
+    btnAddtoCart.addEventListener("click", async (e) => {
+        try {
+            idProduct = e.target.id
+            const { payload } = await fetchData('http://localhost:8080/api/sessions/current', 'GET')
+            idCart = payload.cart
+            if (!idCart) {
+                const newCart = await fetchData('http://localhost:8080/api/carts', 'POST')
+                idCart = newCart.data._id.toString()
+            }
+            const { error } = await fetchData(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, 'POST')
+            if (!error) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Product added to cart',
-                  })
+                })
             }
-        })
-        .catch(err=> {
-            if(err){
-                console.error(err)
-            }      
-        })
-       })
+        } catch (error) {
+            if(error){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!, something went wrong',
+                })
+            }
+        }            
     })
- }
- function addingEventListenertoGotoCartBtn(){
-    btnGoToCart.addEventListener("click", async ()=>{
-    const res = await fetch('http://localhost:8080/api/sessions/current')
-    const {payload} = await res.json()
-    idCart = payload.cart
-       if(idCart){
-        window.location.href = `http://localhost:8080/cart/${idCart}`
-       }
+    
+}
+function addingEventListenertoGotoCartBtn() {
+    btnGoToCart.addEventListener("click", async () => {
+        try {
+            const { payload } = await fetchData('http://localhost:8080/api/sessions/current', 'GET')
+            idCart = payload.cart
+            if (idCart) {
+                window.location.href = `http://localhost:8080/cart/${idCart}`
+            }
+        } catch (error) {
+            if(error){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!, something went wrong',
+                })
+            }
+        }
+       
     })
- 
- }
+}
+//functions init
+addingEventListenertoAddtoCartBtn();
+addingEventListenertoGotoCartBtn();
 
- addingEventListenertoAddtoCartBtn();
- addingEventListenertoGotoCartBtn();

@@ -3,7 +3,7 @@ import local from "passport-local"
 import fetch from 'node-fetch';
 import GitHubStrategy from 'passport-github2';
 import GoogleStrategy from 'passport-google-oauth20'
-import {UserModel} from "../DAO/models/user.model.js";
+import {UserModel} from "../DAO/mongodb/models/user.model.js";
 import { createHash } from "../utils/utils.js";
 import { isValidPassword } from "../utils/utils.js";
 
