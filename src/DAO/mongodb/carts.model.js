@@ -20,16 +20,7 @@ class CartsModel {
 		}
 	}
 
-	// async readByRender(cartId) {
-	// 	try {
-	// 		const cart = await CartModel.findById(cartId).populate("products.product");
-	// 		return cart;
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// }
 
-	// SE CREA EL CARRITO CUANDO SE REGISTRA EL USUARIO
 	async create(newCart) {
 		try {
 			const cartCreated = await CartModel.create(newCart);
