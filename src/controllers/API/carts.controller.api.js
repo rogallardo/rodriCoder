@@ -78,9 +78,9 @@ export const cartsController = {
             let { cid, pid } = req.params
             let {error, msg, data} = await cartService.deleteProductInCart(cid, pid)
             if(error){
-                return res.status(401).json({status: msg, payload: data})
+                return res.status(401).json({status: msg, error, payload: data})
             }
-            res.json({status: msg, payload: data})
+            res.json({status: msg, error, payload: {}})
         } catch (error) {
             return res.status(500).json({status: "Error in server: " + error, payload: {}})
         }

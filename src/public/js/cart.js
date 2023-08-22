@@ -3,6 +3,7 @@ let idCart = null
 let btnPurchase = document.querySelector('.btn-purchase')
 let btnPlus = document.querySelectorAll('.btn-plus')
 let btnMinus = document.querySelectorAll('.btn-minus')
+let btnDelete = document.querySelectorAll('.btn-delete')
 
 // let partialPrice = document.querySelector('.partial-price')
 // let quantityInput = document.querySelectorAll('.quantity-input')
@@ -36,30 +37,60 @@ async function addingEventListenertoPurchaseBtn() {
     btnPurchase.addEventListener("click", async (e) => {  
         try {
             const { payload } = await fetchData(`http://localhost:8080/api/carts/${idCart}`, 'GET')
-            const stockCheck = payload.products.filter(product => product.product.stock < product.quantity )
-            if(!stockCheck.length && !payload.products.length){
+            const productsWithoutStock = payload.products.filter(product => product.product.stock < product.quantity )
+            if(!productsWithoutStock.length && !payload.products.length){
                 return Swal.fire({
                     icon: 'warning',
                     title: 'Your cart is empty',
                 })
             }
-            if(!stockCheck.length && payload.products.length){
-                const res = await fetchData(`http://localhost:8080/api/carts/${idCart}/purchase`, 'POST')
-                console.log(res)
+             //ningun producto del carrito tiene stock
+             if(productsWithoutStock.length === payload.products.length){
                 return Swal.fire({
+                     icon: 'warning',
+                     title: 'Products are out of stock, please check to continue',
+                 })
+             }
+            //todos los productos del carrito tienen stock
+            if(!productsWithoutStock.length && payload.products.length){
+                const res = await fetchData(`http://localhost:8080/api/carts/${idCart}/purchase`, 'POST')
+                const confirmationResult = await Swal.fire({
                     icon: 'success',
                     title: 'Purchase success, please check ticket',
-                })
-                
+                    showCancelButton: true,
+                    confirmButtonText: 'Ticket',
+                    cancelButtonText: 'Back to cart',
+                    allowOutsideClick: false
+                });
+                if (confirmationResult.isConfirmed) {
+                    const { ticket } = res.payload
+                    console.log(res)
+                    Swal.fire({
+                        title: 'Detalle del Ticket',
+                        html: `
+                          <div>
+                            <p><strong>Ticket code: </strong> ${ticket.code}</p>
+                            <p><strong>Purchaser: </strong>${ticket.purchaser}</p>
+                            <p><strong>Date: </strong>${ticket.purchase_datetime}</p>
+                            <p><strong>Amount: </strong>${ticket.amount}</p>
+                          </div>
+                        `,
+                        showCloseButton: false,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: 'Cerrar',
+                        allowOutsideClick: false
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+            
+                }       
             }
-            if(stockCheck.length === payload.products.length){
-               return Swal.fire({
-                    icon: 'warning',
-                    title: 'Products are out of stock, please check to continue',
-                })
-            }
-            if(stockCheck.length != payload.products.length){
-                const confirmationResult = await Swal.fire({
+            //parte de los productos del carrito tienen stock
+            if(productsWithoutStock.length && productsWithoutStock.length < payload.products.length){
+                const confirmPurchase = await Swal.fire({
                     icon: 'warning',
                     title: 'Confirm Purchase',
                     text: 'Some products are out of stock, continue anyway?',
@@ -67,18 +98,43 @@ async function addingEventListenertoPurchaseBtn() {
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                 });
-            
-                if (confirmationResult.isConfirmed) {
-                    const res = await fetchData(`http://localhost:8080/api/carts/${idCart}/purchase`, 'POST');
-                    console.log(res)
-                    Swal.fire({
+                if (confirmPurchase.isConfirmed) {
+                    const res = await fetchData(`http://localhost:8080/api/carts/${idCart}/purchase`, 'POST')
+                    const confirmationResult = await Swal.fire({
                         icon: 'success',
                         title: 'Purchase success, please check ticket',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ticket',
+                        cancelButtonText: 'Back to cart',
+                        allowOutsideClick: false
                     });
+                    if (confirmationResult.isConfirmed) {
+                        const { ticket } = res.payload
+                        Swal.fire({
+                            title: 'Detalle del Ticket',
+                            html: `
+                            <div>
+                                <p><strong>Ticket code: </strong> ${ticket.code}</p>
+                                <p><strong>Purchaser: </strong>${ticket.purchaser}</p>
+                                <p><strong>Date: </strong>${ticket.purchase_datetime}</p>
+                                <p><strong>Amount: </strong>${ticket.amount}</p>
+                            </div>
+                            `,
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            focusConfirm: false,
+                            confirmButtonText: 'Close',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload(); // Recargar la página al cerrar el modal
+                            }
+                        });
+                    } else if (confirmationResult.dismiss === Swal.DismissReason.cancel) {
+                        window.location.reload();
+                    }
                 }
-            }
-           
-            
+            }   
         } catch (error) {
             if(error){
                 Swal.fire({
@@ -136,12 +192,51 @@ async function handleQuantity(e, operation){
         }
     }
 }
+async function addingEventListenertoDeleteBtn() {
+    btnDelete.forEach((btn =>{
+        btn.addEventListener("click", async (e) => {
+            try {
+                const idProduct = e.target.id
+                const confirmDelete = await Swal.fire({
+                    icon: 'warning',
+                    title: 'Confirm delete',
+                    text: 'Want to delete product in cart?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                });
+                if (confirmDelete.isConfirmed) {
+                    const { error } = await fetchData(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, 'DELETE')
+                    if(!error){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Product deleted from cart',
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false
+                        }).then(result =>{
+                            if(result.isConfirmed){
+                                window.location.reload()
+                            }
+                        })
+                    }
+                }
+                
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!, something went wrong',
+                }) 
+            } 
+        })   
+    }))        
+}
 
 //functions init
 (async ()=>{
     await userIdCart();
     addingEventListenertoPlusBtn();
-    addingEventListenertoMinusBtn();
+    addingEventListenertoMinusBtn()
+    addingEventListenertoDeleteBtn();
     addingEventListenertoPurchaseBtn();   
 })()
 

@@ -194,7 +194,7 @@
     text-justify: auto;
   }
 
-  /*cart style*/
+
 .addproduct-container{
     display: flex;
     flex-direction: column;
@@ -244,6 +244,7 @@
 #btn-add{
     width:100%
 }
+
 .table{
     margin-top: 00px;
 }
@@ -253,17 +254,33 @@
   justify-content: center;
   text-align: center;
 }
+  /*cart style*/
+.cart-container{
+  display: flex;
+  margin-top: 2%;
+  padding-left: 5%;
+  padding-right: 5%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.btns-quantity-container-row{
+  display: flex;
+  justify-content: center;
 
+}
 .btns-quantity-container{
   display: flex;
   align-items: center;
-  width: 6rem;
+  width: fit-content;
   justify-content: space-between;
 
 }
 .form-quantity{
   display: flex;
-  width: 30%;
+  width: 2.5rem;
+  height: 2.5rem;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -287,8 +304,8 @@ margin: 0;
 .btn-plus{
   display: flex;
   background-color: #f1f1f1;
-  width: 30%;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   color: #427fb8;
   font-weight: 700;
   text-decoration: none;
@@ -303,8 +320,8 @@ margin: 0;
 .btn-minus{
   display: flex;
   background-color: #f1f1f1;
-  width: 30%;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   color: #b84242;
   font-weight: 700;
   text-decoration: none;
@@ -315,6 +332,54 @@ margin: 0;
   align-items: center;
   text-align: center;
   text-justify: center;
+}
+.btn-delete{
+
+    display: flex;
+    padding: 8px;
+    border: solid 1px;
+    border-color: #c45555;
+    background-color: #f1f1f1;
+    color: #c45555;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-justify: auto;
+}
+.btn-purchase{
+  margin-top: 30px;
+  display: inline-block;
+  width: 100%;
+  padding: 8px 16px;
+  background-color: #558dc4;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: auto;
+}
+.btn-purchase:hover{
+  padding: 8px 16px;
+  background-color: #71ade9;
+}
+.purchase-btn-container{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-self: center;
+}
+td > img{
+  width: auto;
+  height: 2.5rem;
+  object-fit: cover;
 }
 
 /*logout-btn*/

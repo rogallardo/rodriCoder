@@ -11,7 +11,7 @@ class TicketsService {
     async createTicket(email, productsStockTrue){
         try{
             const generateRandomCode = (length) => {
-                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 const characterCount = characters.length;
                 let code = '';
                 for (let i = 0; i < length; i++) {
