@@ -6,9 +6,22 @@ export class ProductsModel{
 			return products;		
 	}
 	async getById(pid) {
+		try {
 			const product = await ProductModel.findById(pid);
 			return product;
+		} catch (error) {
+			console.log( error)
+		}		
 	}
+	// async getManyById(productsIdsArray){
+	// 	try {
+	// 		const documents = await ProductModel.find({ _id: { $in: productsIdsArray } })
+	// 	return documents
+	// 	} catch (error) {
+	// 		throw Error('Error en modelo en getmanybyid')
+	// 	}
+		
+	// }
 
 	async create(newProduct) {
 			const createdProduct = await ProductModel.create(newProduct);

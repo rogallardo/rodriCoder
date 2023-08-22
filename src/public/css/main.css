@@ -162,6 +162,7 @@
     text-align: center;
     text-justify: auto;
   }
+  
   .cardDetail-content .btn-goBack {
     margin-top: 10px;
     display: inline-block;
@@ -244,8 +245,78 @@
     width:100%
 }
 .table{
-    margin-top: 10px;
+    margin-top: 00px;
 }
+.th{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.btns-quantity-container{
+  display: flex;
+  align-items: center;
+  width: 6rem;
+  justify-content: space-between;
+
+}
+.form-quantity{
+  display: flex;
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.quantity-input{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  width: 100%;
+  
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+        }
+
+
+.btn-plus{
+  display: flex;
+  background-color: #f1f1f1;
+  width: 30%;
+  height: 2rem;
+  color: #427fb8;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: center;
+}
+.btn-minus{
+  display: flex;
+  background-color: #f1f1f1;
+  width: 30%;
+  height: 2rem;
+  color: #b84242;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: center;
+}
+
 /*logout-btn*/
 .logout-btn{
   position: absolute;

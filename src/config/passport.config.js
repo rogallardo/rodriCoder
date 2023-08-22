@@ -6,6 +6,7 @@ import GoogleStrategy from 'passport-google-oauth20'
 import {UserModel} from "../DAO/mongodb/models/user.model.js";
 import { createHash } from "../utils/utils.js";
 import { isValidPassword } from "../utils/utils.js";
+import { cartService } from "../services/carts.services.js";
 
 export function passportInit() {
     const LocalStrategy = local.Strategy
@@ -23,13 +24,14 @@ export function passportInit() {
                     email: profile._json.email
                 });
                 if (!user) {
+                    const { data } = await cartService.createCart()
                     const newUser = {
                         email: profile._json.email,
                         firstName: profile._json.given_name || profile._json.name || 'noname',
                         lastName: profile._json.family_name || 'nolast',
                         isAdmin: false,
                         password: 'nopass',
-
+                        cart : data._id
                     };
                     let userCreated = await UserModel.create(newUser);
                     console.log('User Registration succesful');
@@ -75,12 +77,14 @@ export function passportInit() {
                         email: profile.email
                     });
                     if (!user) {
+                        const { data } = await cartService.createCart()
                         const newUser = {
                             email: profile.email,
                             firstName: profile._json.name || profile._json.login || 'noname',
                             lastName: 'nolast',
                             isAdmin: false,
                             password: 'nopass',
+                            cart: data._id
                         };
                         let userCreated = await UserModel.create(newUser);
                         console.log('User Registration succesful');
@@ -142,12 +146,14 @@ export function passportInit() {
                         console.log('usuario ya existe')
                         return done(null, false)
                     }
+                    const { data } = await cartService.createCart()
                     const newUserCreated = {
                         firstName,
                         lastName,
                         email,
                         password: createHash(password),
                         isAdmin: false,
+                        cart: data._id
                     }
                     const newUser = await UserModel.create(newUserCreated)
                     console.log('este es el usuario creado', newUser)

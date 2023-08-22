@@ -32,13 +32,13 @@ class ProductService {
                     category: doc.category,
                     thumbnail: doc.thumbnail
                 }
-            })
-            let prevLink = products.hasPrevPage ? `http://localhost:8080/api/products/?page=${products.prevPage}` : null
-            let nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
+                })
+                let prevLink = products.hasPrevPage ? `http://localhost:8080/api/products/?page=${products.prevPage}` : null
+                let nextLink = products.hasNextPage ? `http://localhost:8080/api/products/?page=${products.nextPage}` : null
             
-            result.data = docsNormalized
-            result.msg = "Products sended successfully"
-            result.paginate = {
+                result.data = docsNormalized
+                result.msg = "Products sended successfully"
+                result.paginate = {
                 page,
                 totalDocs: products.totalDocs,
                 totalPages: products.totalPages,
@@ -53,9 +53,7 @@ class ProductService {
             }else{
                 result.data = products
                 result.msg = "Products sended successfully"
-            }
-            
-            
+            }         
             return result
         } catch (error) {
             result.error = true
@@ -91,7 +89,7 @@ class ProductService {
             return result
         } catch (error) {
             result.error = true
-            result.msg = "Error trying to get product, please checkID"
+            result.msg = "Error trying to get product, please checkID: " + error
             return result
         }
     }
@@ -126,21 +124,6 @@ class ProductService {
             msg: "",
             data: {}
         }
-        let {
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnail
-        } = productToUpdate
-        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail) {
-            result.error = true
-            result.msg = "Error, please complete the fields"
-            return result
-        } else {
             try {
                 const updatedProduct = await productsModel.update(pid, productToUpdate)
                 if(updatedProduct){
@@ -159,7 +142,7 @@ class ProductService {
                 result.data = {}
                 return result
             }
-        }
+        
     }
     async deleteProductById(pid) {
         const result = {

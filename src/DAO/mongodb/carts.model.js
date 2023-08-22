@@ -5,48 +5,49 @@ class CartsModel {
 		try {
 			const carts = await CartModel.find({});
 			return carts;
-		} catch (e) {
-			console.log(e);
+		} catch (error) {
+			throw Error ('Error reading db mongo: ' + error);
 		}
 	}
 
-	async getById(cartId) {
+	async getById(cid) {
 		try {
-			const cartById = await CartModel.findById(cartId).populate('products.product');
-			return cartById;
-		} catch (e) {
-			console.log(e);
-			throw e;
+			const cart = await CartModel.findById(cid).populate('products.product');
+			return cart;
+		} catch (error) {
+			throw Error ('Error reading db mongo: ' + error);
 		}
 	}
 
-	// async readByRender(cartId) {
-	// 	try {
-	// 		const cart = await CartModel.findById(cartId).populate("products.product");
-	// 		return cart;
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// }
-
-	// SE CREA EL CARRITO CUANDO SE REGISTRA EL USUARIO
 	async create(newCart) {
 		try {
 			const cartCreated = await CartModel.create(newCart);
 			return cartCreated;
-		} catch (e) {
-			console.log(e);
+		} catch (error) {
+			throw Error ('Error writing db mongo: ' + error);
 		}
 	}
 
-	async update(cartId, foundCart) {
+	async update(cid, foundCart) {
 		try {
-			const cart = await CartModel.findByIdAndUpdate({_id: cartId}, foundCart);
+			const cart = await CartModel.findByIdAndUpdate({_id: cid}, foundCart);
 			return cart;
 		} catch (error) {
-			throw new Error("Error updating cart in database");
+			throw Error ('Error updating db mongo: ' + error);
+		}
+	}
+
+	async updateQuantity(cid, pid, quantity) {
+		try {
+			const updatedCart = await CartModel.findOneAndUpdate(  { _id: cid, 'products.product': pid },
+			{ $set: { 'products.$.quantity': quantity } },
+			{ new: true })
+			return updatedCart;
+		} catch (error) {
+			throw Error ('Error updating db mongo: ' + error);
 		}
 	}
 }
+
 
 export const cartsModel = new CartsModel();

@@ -1,6 +1,5 @@
 import express from 'express'
-import { cartsController } from '../../controllers/API/carts.controller.js'
-import { cartService } from '../../services/carts.services.js'
+import { cartsController } from '../../controllers/API/carts.controller.api.js'
 export const routerCarts = express.Router()
 
 routerCarts.get('/:cid', cartsController.getCartById)
@@ -10,3 +9,9 @@ routerCarts.put('/:cid/products/:pid', cartsController.updateProductQuantityInCa
 routerCarts.put('/:cid', cartsController.updateProductsInCart)
 routerCarts.delete('/:cid/products/:pid', cartsController.deleteProductInCart)
 routerCarts.delete('/:cid', cartsController.deleteAllProductsInCart)
+
+routerCarts.post('/:cid/purchase', cartsController.purchase)
+
+
+
+

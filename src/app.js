@@ -3,15 +3,12 @@ import path from 'path'
 import { __dirname } from './utils/utils.js';
 import { Server } from 'socket.io';
 import { connectionMongo } from './utils/utils.js';
-import { routerProducts } from './routes/API/products.router.js';
-import { routerCarts} from './routes/API/carts.router.js';
-import { routerAuth }from './routes/API/auth.router.js'
-import { routerProductsView, routerAuthView, routerCartView, routerRealTimeProducts } from './routes/view/views.router.js'
 import handlebars from "express-handlebars";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import { passportInit } from './config/passport.config.js';
+import { routerAPI, routerViews } from './routes/index.router.js';
 
 
 const app = express();
@@ -39,16 +36,9 @@ app.set("view engine", "handlebars");
 
 //endpoints
 //api
-app.use('/api/products/', routerProducts)
-app.use('/api/carts/', routerCarts)
-app.use('/api/sessions/', routerAuth)
+app.use('/api', routerAPI)
 //views
-app.use('/products', routerProductsView)
-app.use('/cart', routerCartView)
-app.use('/', routerAuthView)
-
-
-app.use('/realtimeproducts', routerRealTimeProducts)
+app.use('/', routerViews)
 
 app.get("*", (req, res) => {
   res.status(404).send("error, route not found");

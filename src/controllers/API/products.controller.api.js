@@ -43,9 +43,13 @@ export const productsController = {
     updateProduct: async (req, res) => {
         try {
             let { pid } = req.params
+            
             let { title, description, code, price, status, stock, category, thumbnail } = req.body
-            const productUpdated = {title, description, code, price, status, stock, category, thumbnail}
-            let { error, msg, data } = await productService.updateProduct(pid, productUpdated)
+            if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail){    
+                return res.status(401).json({status: "Error, please complete the fields", payload: {}})
+            }
+            const productToUpdate = {title, description, code, price, status, stock, category, thumbnail}
+            let { error, msg, data } = await productService.updateProduct(pid, productToUpdate)
             if (error) {
                 return res.status(401).json({status: msg, payload: data})
             } 

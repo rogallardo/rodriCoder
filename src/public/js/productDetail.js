@@ -1,6 +1,8 @@
 //DOM elements
 let btnAddtoCart = document.querySelector('.btn-addToCart')
 let btnGoToCart = document.getElementById('goToCartBtn')
+
+
 //global variables, will be helpfull with fetching params in the urls
 let idCart = null
 let idProduct = null
@@ -25,18 +27,16 @@ async function addingEventListenertoAddtoCartBtn() {
         try {
             idProduct = e.target.id
             const { payload } = await fetchData('http://localhost:8080/api/sessions/current', 'GET')
-            idCart = payload.cart
-            if (!idCart) {
-                const newCart = await fetchData('http://localhost:8080/api/carts', 'POST')
-                idCart = newCart.data._id.toString()
-            }
-            const { error } = await fetchData(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, 'POST')
-            if (!error) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Product added to cart',
-                })
-            }
+            idCart = payload.cart.toString()
+            if (idCart) { 
+                const { error } = await fetchData(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, 'POST')
+                if (!error) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Product added to cart',
+                    })
+                }   
+            } 
         } catch (error) {
             if(error){
                 Swal.fire({
@@ -45,8 +45,7 @@ async function addingEventListenertoAddtoCartBtn() {
                 })
             }
         }            
-    })
-    
+    })   
 }
 function addingEventListenertoGotoCartBtn() {
     btnGoToCart.addEventListener("click", async () => {
