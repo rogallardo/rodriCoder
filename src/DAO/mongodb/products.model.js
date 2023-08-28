@@ -6,12 +6,8 @@ export class ProductsModel{
 			return products;		
 	}
 	async getById(pid) {
-		try {
 			const product = await ProductModel.findById(pid);
-			return product;
-		} catch (error) {
-			console.log( error)
-		}		
+			return product;		
 	}
 	// async getManyById(productsIdsArray){
 	// 	try {

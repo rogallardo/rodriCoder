@@ -9,6 +9,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import { passportInit } from './config/passport.config.js';
 import { routerAPI, routerViews } from './routes/index.router.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 
 const app = express();
@@ -55,7 +56,7 @@ const socketServer = new Server(httpServer)
 
 //lo seteo a nivel global
 app.set('socketServer', socketServer)
-
+app.use(errorHandler)
 
 
 

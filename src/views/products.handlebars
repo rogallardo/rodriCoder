@@ -1,12 +1,16 @@
 <div class="products-container">
-    <a class="logout-btn"  href="http://localhost:8080/api/sessions/logout">Cerrar sesión</a>
-    <h1 class="title-products">Products</h1>
-    <h2>Hola {{user.firstName}}!</h2>
-   {{#if user.isAdmin}}
-    <h3>Eres administrador</h3>
-    {{else}}
-    <h3>Eres usuario</h3>
-    {{/if}}
+    <div class="session-container">
+         <h2>Hola {{user.firstName}}!</h2>
+         <div class="logOut-container">
+            {{#if user.isAdmin}}
+            <h3>Eres administrador</h3>
+            {{else}}
+            <h3>Eres usuario</h3>
+            {{/if}}
+            <a class="logout-btn"  href="http://localhost:8080/api/sessions/logout">Cerrar sesión</a>
+         </div>   
+    </div>
+    <h1 class="title-products">Productos</h1>
     <div class="cards-container">
         {{#each data}}
         <div class="card">
@@ -14,6 +18,7 @@
             <div class="card-content">
                 <h3>{{this.title}}</h3>
                 <p>{{this.description}}</p>
+                 <p>Stock: {{this.stock}} u.</p>
                 <p>{{this.price}}</p>
                 <a href="http://localhost:8080/products/{{this.id}}" id={{this.id}} class="btn-view">View detail</a>
             </div>

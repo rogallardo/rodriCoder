@@ -47,6 +47,7 @@ routerAuth.post('/login', passport.authenticate('login', {failureRedirect: '/api
 routerAuth.get('/error-login', (req, res)=>{
     res.send('error de login con passport')
 });
+//current page
 routerAuth.get('/current', (req, res)=>{
     let {user} = req
    return res.json({

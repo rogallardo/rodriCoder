@@ -1,3 +1,6 @@
+*{
+  font-family: 'Poppins', sans-serif;
+}
 .products-container{
     display: flex;
     flex-direction: column;
@@ -5,7 +8,7 @@
     min-height: 100vh;
     justify-content: center;
     align-items: center;
-    background-color: aliceblue;
+    background-color: rgb(255, 255, 255);
 }
 .title-products{
     margin: 10px;
@@ -16,15 +19,17 @@
     width: 95%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 20px;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
     
 }
 .card {
     background-color: white;
     display: flex;
-    width: 250px;
-    height: 400px;
+    width: 300px;
+    height: 500px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -37,18 +42,17 @@
   }
   
   .card img {
-    width: 250px;
+    width: 200px;
     height: 250px;
-    object-fit: contain;
-
+    object-fit: contain
   }
   
   .card-content {
-    padding: 10px;
+    padding: 1rem;
   }
   
   .card-content h3 {
-    font-size: 18px;
+    font-size: 1rem;
     margin: 0;
     text-align: center;
     text-justify:auto;
@@ -57,25 +61,29 @@
   .card-content p {
     text-align: center;
     text-justify:auto;
-    font-size: 14px;
+    font-size: 0.8rem;
   }
   
   .card-content .btn-view {
-    display: inline-block;
-    padding: 8px 16px;
+    display: flex;
+    width: 8rem;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
     background-color: #619feb;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
+    font-size: 0.8rem;
   }
   .paginate-container{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 200px;
-    height: 30px;
+    width: 400px;
+    height: 100px;
 
   }
   
@@ -383,9 +391,33 @@ td > img{
 }
 
 /*logout-btn*/
+.session-container{
+  display: flex;
+  width: 95vw;
+  height: fit-content;
+  align-items: center;
+  justify-content: space-between;
+  
+
+}
+.logOut-container > h3{
+  padding-right: 1rem;
+}
+.logOut-container{
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
 .logout-btn{
-  position: absolute;
-  top: 0;
-  right: 0;
+  display: flex; 
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  width: 8rem;
+  height: 2rem;
+  color: white;
+  border-radius: 5px;
+  background-color: #b1b1b1;
+
  
 }
