@@ -1,29 +1,28 @@
 import CustomError from "../../services/errors/customError.js";
 import Errors from "../../services/errors/enums.js";
-import { productService } from "../../services/products.service.js"
-import asyncHandler from "express-async-handler"
-;
+import { productService } from "../../services/products.service.js";
+import "express-async-errors"
 
 export const productsController = {
-    getProducts: asyncHandler (async (req, res) => {
+    getProducts:  async (req, res) => {
         try {
             let { page, limit, category, sort, order } = req.query
             const queries = {page, limit, category, sort, order}
             let { error, msg, data, paginate } = await productService.getProducts(queries)
-            if(error) {
+            if(errosr) {
                 return res.status(401).json({status: msg, payload: data})
             }
             res.json({status: msg, payload: data, totalPages: paginate.totalPages, prevPage: paginate.prevPage, nextPage: paginate.nextPage, prevLink: paginate.prevLink, nextLink: paginate.nextLink})           
         } catch (error) {    
-            throw CustomError.createError({
+             CustomError.createError({
                 name: 'Error trying to get products',
-                message: 'Cannot get the products, something is wrong with products',
+                message: 'Cannot get the products, something is wrong',
                 cause: 'Probably some products contains diferent format file',
                 code: Errors.UNHANDLER_ERROR
               })     
         }     
-    }),
-    getProductById: asyncHandler (async (req, res) => {
+    },
+    getProductById: async (req, res) => {
         try {
             let { pid } = req.params
             let { error, msg, data } = await productService.getProductById(pid)
@@ -39,8 +38,8 @@ export const productsController = {
                 code: Errors.ID_ERROR
               })  
         }
-    }),
-    createProduct: asyncHandler (async (req, res) => {
+    },
+    createProduct: async (req, res) => {
         try {
             let { title, description, code, price, status, stock, category, thumbnail } = req.body
             const newProduct = {title, description, code, price, status, stock,category, thumbnail}
@@ -57,8 +56,8 @@ export const productsController = {
                 code: Errors.UNHANDLER_ERROR
               })   
         }
-    }),
-    updateProduct: asyncHandler (async (req, res) => {
+    },
+    updateProduct: async (req, res) => {
         try {
             let { pid } = req.params
             let { title, description, code, price, status, stock, category, thumbnail } = req.body
@@ -79,8 +78,8 @@ export const productsController = {
                 code: Errors.UNHANDLER_ERROR
               })   
         }
-    }),
-    deleteProduct: asyncHandler (async (req, res) => {
+    },
+    deleteProduct: async (req, res) => {
         try {
             let { pid } = req.params
             let {error, msg, data} = await productService.deleteProductById(pid)
@@ -96,5 +95,5 @@ export const productsController = {
                 code: Errors.UNHANDLER_ERROR
               })   
         }
-    })
+    }
 }

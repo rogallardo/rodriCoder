@@ -6,6 +6,7 @@ import { routerProductsView } from './products/products.router.js'
 import { routerCartView } from './carts/carts.router.js'
 import { routerAuthView } from './auth/auth.router.js'
 import { routerRealTimeProducts } from './realtime/realtime.router.js'
+import { routerMessagesView } from './messages/messages.router.js'
 export const routerViews = express.Router()
 export const routerAPI = express.Router()
 //api
@@ -17,3 +18,4 @@ routerViews.use('/products/', routerProductsView)
 routerViews.use('/cart', routerCartView)
 routerViews.use('/', routerAuthView)
 routerViews.use('/realtimeproducts', routerRealTimeProducts)
+routerViews.use('/messages', routerMessagesView)

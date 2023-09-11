@@ -1,13 +1,15 @@
 import express from "express";
 import { productService } from "../../services/products.service.js";
 import { productsModel } from "../../DAO/mongodb/products.model.js";
+import { checkIsAdminNotUser } from "../../middlewares/auth.js";
 export const routerRealTimeProducts = express.Router()
 
 //render realTimeProducts
-routerRealTimeProducts.get('/', async (req, res)=>{
+routerRealTimeProducts.get('/', checkIsAdminNotUser, async (req, res)=>{
     const socketServer = req.app.get('socketServer')
     socketServer.on('connection', async (socket)=>{
         console.log(`conectado con id ${socket.id}`)
+
 
         const allProducts = await productsModel.getProducts()
         socket.emit('primarychannel', {prods: allProducts})

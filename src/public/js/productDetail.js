@@ -26,16 +26,16 @@ async function addingEventListenertoAddtoCartBtn() {
     btnAddtoCart.addEventListener("click", async (e) => {
         try {
             idProduct = e.target.id
-            const { payload } = await fetchData('http://localhost:8080/api/sessions/current', 'GET')
+            const { payload, status } = await fetchData('http://localhost:8080/api/sessions/current', 'GET')
             idCart = payload.cart.toString()
             if (idCart) { 
-                const { error } = await fetchData(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, 'POST')
+                const { error, status } = await fetchData(`http://localhost:8080/api/carts/${idCart}/products/${idProduct}`, 'POST')
                 if (!error) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Product added to cart',
+                        title: status
                     })
-                }   
+                }
             } 
         } catch (error) {
             if(error){

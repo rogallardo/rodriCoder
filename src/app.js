@@ -35,6 +35,7 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "handlebars");
 
+
 //endpoints
 //api
 app.use('/api', routerAPI)
@@ -56,6 +57,7 @@ const socketServer = new Server(httpServer)
 
 //lo seteo a nivel global
 app.set('socketServer', socketServer)
+
 app.use(errorHandler)
 
 

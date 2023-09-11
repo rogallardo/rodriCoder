@@ -1,6 +1,6 @@
 import Errors from "../services/errors/enums.js";
 
-export function errorHandler(error, _, res, next) {
+export function errorHandler(error, req, res, next) {
 	switch (error.code) {
 		case Errors.ROUTING_ERROR:
 			res.status(404).json({ status: "error", error: error.name, cause: error.cause });

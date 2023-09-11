@@ -13,3 +13,17 @@ export function checkIsAdmin(req, res, next){
     }
     return next()
 }
+export function checkIsUserNotAdmin(req, res, next){
+    if(req.session.user.isAdmin){
+        let errorMsg = 'Acceso no autorizado para administrador'
+        return res.render('error-page', {errorMsg})
+    }
+    return next()    
+}
+export function checkIsAdminNotUser(req, res, next){
+    if(req.session.user.isAdmin){
+        return next()
+    }
+    let errorMsg = 'Acceso no autorizado, debe ser administrador'
+    return res.render('error-page', {errorMsg})
+}
